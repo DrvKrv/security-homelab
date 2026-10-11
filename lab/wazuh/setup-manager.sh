@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# setup-manager.sh - run ON THE WAZUH VM (Ubuntu 24.04 ARM64), once, after the
+# setup-manager.sh - run ON THE WAZUH VM (Ubuntu 24.04, x86 or ARM64), once, after the
 # Wazuh all-in-one install works and you can log in to the dashboard.
 #
 # What it does:

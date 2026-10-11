@@ -8,7 +8,7 @@
         .\Reset-Lab.ps1 -UnlockUser labuser     # unlock after the failed-logon exercise
         .\Reset-Lab.ps1 -RemoveUser svc_backup  # remove the "attacker" account if left behind
 
-    Restoring a VM snapshot (VMware Fusion > Virtual Machine > Snapshots) is
+    Restoring a VM snapshot (in VMware Fusion, UTM or your cloud console) is
     the fastest full reset, but it also rewinds anything else you changed.
 #>
 [CmdletBinding()]
