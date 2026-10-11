@@ -1,4 +1,4 @@
-# Incident Report: `TODO short title, e.g. "Repeated failed logons on win-client"`
+# Incident Report: `TODO short title, e.g. "Repeated failed logons on win-srv"`
 
 Copy this file to `IR-YYYY-NNN-short-name.md` for each incident. Fill every
 section from real evidence; cite the screenshot or log excerpt for each claim.

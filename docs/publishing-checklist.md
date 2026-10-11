@@ -11,7 +11,8 @@ adds logs, configs or screenshots.
 - [ ] API tokens, cloud credentials, `.env` files
 - [ ] VM disk images, snapshots, memory files, ISOs
 - [ ] Raw `.evtx` exports or full packet captures: publish short, redacted excerpts instead
-- [ ] Your real home network details: home IPs, router model, Wi-Fi name, public IP, MAC addresses of real devices
+- [ ] Azure identifiers: subscription ID, tenant ID, full resource IDs, the VMs' public IP address
+- [ ] Your real home network details: home public IP (it appears in the NSG rule), router model, Wi-Fi name, MAC addresses of real devices
 - [ ] Personal information: email, real name of other people, serial numbers, license keys
 
 The [`.gitignore`](../.gitignore) blocks the most common file types, but it
@@ -21,7 +22,8 @@ cannot catch a password pasted into a Markdown file. You still need to check.
 
 - [ ] Crop to the part that proves the point
 - [ ] Blur or black out: passwords, tokens, hostnames of real devices, your Mac's username if you prefer, browser bookmarks/tabs
-- [ ] Lab IPs (192.168.50.x) are fine to show: they are private and only exist inside the lab
+- [ ] Lab private IPs (10.0.1.x) are fine to show: they only exist inside the VNet
+- [ ] Black out the Azure portal header (account email, directory name) and any subscription ID or public IP
 - [ ] Save into `docs/evidence/` with a descriptive name (`IR-2026-001-alert.png`)
 
 ## Before committing a config file or log excerpt
