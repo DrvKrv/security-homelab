@@ -1,0 +1,86 @@
+<!--
+  Lab custom rules -> install to /var/ossec/etc/rules/local_rules.xml
+  (setup-manager.sh does this for you and keeps a backup of the old file).
+
+  Custom rule IDs must be between 100000 and 120000.
+  Levels: 0 = ignore, 3 = informational, 5-7 = worth a look, 10+ = investigate now.
+
+  Built-in rules this lab relies on (no changes needed, listed so you know what to search for):
+    Windows   60122  Logon failure - unknown user or bad password (event 4625)
+              60204  Multiple Windows logon failures (8+ in 4 minutes)
+              60115  User account locked out (event 4740)
+              60109  User account enabled or created (events 4720, 4722)
+              60110  User account changed (event 4738)
+              60111  User account disabled or deleted (events 4725, 4726)
+              60154  Administrators group changed (events 4732, 4733 on S-1-5-32-544)
+              60112  Windows audit policy changed (event 4719)
+    Linux     5710   sshd: attempt to login using a non-existent user
+              5712   sshd: brute force, non-existent user (8+ in 2 minutes)
+              5760   sshd: authentication failed (wrong password; child of 5716)
+              5763   sshd: brute force, authentication failed (8+ in 2 minutes)
+              5503   PAM: user login failed
+              5902   New user added to the system
+              2961   User added to group sudo
+              5555   PAM: user changed password
+              5903   Group (or user) deleted from the system
+-->
+
+<group name="lab,firewall,">
+
+  <!--
+    UFW blocked a packet. Two parents because the same log line can reach
+    Wazuh two ways:
+      5100 = generic kernel message (journald form, decoded by lab-ufw)
+      4100 = firewall-typed event (old rsyslog form with the uptime stamp,
+             decoded by Wazuh's built-in "ufw" decoder)
+  -->
+  <rule id="100100" level="5">
+    <if_sid>5100</if_sid>
+    <match>[UFW BLOCK]</match>
+    <description>Lab: UFW firewall blocked a connection from $(srcip) to port $(dstport).</description>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <group>lab_ufw_block,firewall_drop,</group>
+  </rule>
+
+  <rule id="100101" level="5">
+    <if_sid>4100</if_sid>
+    <match>[UFW BLOCK]</match>
+    <description>Lab: UFW firewall blocked a connection from $(srcip) to port $(dstport).</description>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <group>lab_ufw_block,firewall_drop,</group>
+  </rule>
+
+  <!--
+    Many blocks from one source in a short time usually means a port scan.
+    UFW's default "low" logging is rate-limited (about 10 lines in a burst,
+    then 3 per minute), so the threshold here is deliberately small.
+  -->
+  <rule id="100102" level="10" frequency="8" timeframe="60" ignore="120">
+    <if_matched_group>lab_ufw_block</if_matched_group>
+    <same_source_ip />
+    <description>Lab: possible port scan - many blocked connections from $(srcip).</description>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <group>lab_port_scan,multiple_drops,</group>
+  </rule>
+
+</group>
+
+<group name="lab,account_change,">
+
+  <!-- Built-in 2961 is only level 5. Being given sudo = being made an admin, so raise it. -->
+  <rule id="100110" level="10">
+    <if_sid>2961</if_sid>
+    <description>Lab: Linux user was added to the sudo (administrators) group.</description>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+    <group>lab_privilege_change,</group>
+  </rule>
+
+</group>
