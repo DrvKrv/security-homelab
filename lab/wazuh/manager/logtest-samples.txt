@@ -7,19 +7,19 @@
 # Press Ctrl+C to quit.
 #
 # These are made-up lines in the same format as Ubuntu 24.04's journald.
-# IPs: 192.168.50.10 = wazuh (playing attacker), 192.168.50.30 = linux-srv.
+# IPs: 10.0.1.10 = wazuh (playing attacker), 10.0.1.30 = linux-srv.
 
 # 1) UFW blocked a connection -> expect rule 100100, level 5,
-#    with srcip 192.168.50.10 and dstport 3306 in the decoding phase.
-Oct 11 21:40:01 linux-srv kernel: [UFW BLOCK] IN=ens160 OUT= MAC=00:0c:29:aa:bb:cc:00:0c:29:dd:ee:ff:08:00 SRC=192.168.50.10 DST=192.168.50.30 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=54321 DF PROTO=TCP SPT=51515 DPT=3306 WINDOW=64240 RES=0x00 SYN URGP=0
+#    with srcip 10.0.1.10 and dstport 3306 in the decoding phase.
+Oct 11 21:40:01 linux-srv kernel: [UFW BLOCK] IN=eth0 OUT= MAC=00:0c:29:aa:bb:cc:00:0c:29:dd:ee:ff:08:00 SRC=10.0.1.10 DST=10.0.1.30 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=54321 DF PROTO=TCP SPT=51515 DPT=3306 WINDOW=64240 RES=0x00 SYN URGP=0
 
 # 2) SSH login with a username that does not exist -> expect rule 5710, level 5.
 #    Paste it 8+ times quickly and the 8th should show rule 5712 (brute force), level 10.
-Oct 11 21:41:10 linux-srv sshd[2345]: Invalid user admin from 192.168.50.10 port 40122
+Oct 11 21:41:10 linux-srv sshd[2345]: Invalid user admin from 10.0.1.10 port 40122
 
 # 3) SSH wrong password for a real user -> expect rule 5760 (a more specific child of 5716), level 5.
 #    8+ of these within 2 minutes -> rule 5763 (brute force, authentication failed), level 10.
-Oct 11 21:42:05 linux-srv sshd[2350]: Failed password for labuser from 192.168.50.10 port 40130 ssh2
+Oct 11 21:42:05 linux-srv sshd[2350]: Failed password for labuser from 10.0.1.10 port 40130 ssh2
 
 # 4) New Linux user created -> expect rule 5902, level 8.
 Oct 11 21:43:00 linux-srv useradd[2400]: new user: name=svc_backup, UID=1002, GID=1002, home=/home/svc_backup, shell=/bin/bash, from=/dev/pts/0

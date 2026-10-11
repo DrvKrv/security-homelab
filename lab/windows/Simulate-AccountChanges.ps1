@@ -4,7 +4,7 @@
     ("persistence"), then lets you clean it up as the defender.
 
 .DESCRIPTION
-    !!! Run ONLY on your lab VM (win-client), from an elevated PowerShell.
+    !!! Run ONLY on your lab VM (win-srv), from an elevated PowerShell.
     !!! It creates a real local administrator account until you run -Phase Cleanup.
 
     -Phase Attack   (the "incident")

@@ -13,7 +13,7 @@
 #
 # Usage:
 #   bash simulate-blocked-connections.sh               # target = LINUX_IP
-#   bash simulate-blocked-connections.sh 192.168.50.30
+#   bash simulate-blocked-connections.sh 10.0.1.30
 
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"

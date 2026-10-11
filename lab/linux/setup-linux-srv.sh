@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# setup-linux-srv.sh - run ON linux-srv (Ubuntu 24.04, x86 or ARM64), once, after the
+# setup-linux-srv.sh - run ON linux-srv (Ubuntu 24.04), once, after the
 # Wazuh agent is installed and shows Active in the dashboard.
 #
 #   sudo bash setup-linux-srv.sh
@@ -60,6 +60,6 @@ ss -tlnp | sed 's/^/    /'
 
 cat <<EOF
 
-Done. Take a snapshot of linux-srv now (VMware, UTM or your cloud provider) and call it "baseline".
+Done. Optional: snapshot linux-srv's disk in Azure now and call it "baseline" (see runbook 00, step 5).
 Screenshot the 'ufw status verbose' output above for your write-up.
 EOF

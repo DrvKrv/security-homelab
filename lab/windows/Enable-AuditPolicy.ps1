@@ -4,7 +4,7 @@
     account changes show up in the Security log (and therefore in Wazuh).
 
 .DESCRIPTION
-    LAB USE ONLY. Run on the win-client VM, in PowerShell opened with
+    LAB USE ONLY. Run on the win-srv VM, in PowerShell opened with
     "Run as administrator":
 
         Set-ExecutionPolicy -Scope Process Bypass

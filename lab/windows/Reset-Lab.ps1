@@ -1,14 +1,14 @@
 <#
 .SYNOPSIS
-    Puts win-client back into a clean state between exercises.
+    Puts win-srv back into a clean state between exercises.
 
 .DESCRIPTION
-    Run from an elevated PowerShell on win-client.
+    Run from an elevated PowerShell on win-srv.
 
         .\Reset-Lab.ps1 -UnlockUser labuser     # unlock after the failed-logon exercise
         .\Reset-Lab.ps1 -RemoveUser svc_backup  # remove the "attacker" account if left behind
 
-    Restoring a VM snapshot (in VMware Fusion, UTM or your cloud console) is
+    Restoring a disk snapshot in the Azure portal is
     the fastest full reset, but it also rewinds anything else you changed.
 #>
 [CmdletBinding()]

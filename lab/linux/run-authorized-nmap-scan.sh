@@ -13,7 +13,7 @@
 #
 # Usage:
 #   bash run-authorized-nmap-scan.sh                # target = LINUX_IP
-#   bash run-authorized-nmap-scan.sh 192.168.50.20  # e.g. scan win-client instead
+#   bash run-authorized-nmap-scan.sh 10.0.1.20  # e.g. scan win-srv instead
 
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
