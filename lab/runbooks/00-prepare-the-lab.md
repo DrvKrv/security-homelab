@@ -101,7 +101,10 @@ This turns on the UFW firewall (SSH allowed from the lab subnet only, everything
 
 ## 5. Snapshot everything
 
-In VMware Fusion, for each VM: **Virtual Machine > Snapshots > Take Snapshot**, name it `baseline`. If an exercise goes wrong, restore it and start again.
+Take a snapshot of each VM and name it `baseline`. If an exercise goes wrong, restore it and start again.
+
+- **VMware Fusion (Mac):** Virtual Machine > Snapshots > Take Snapshot.
+- **Cloud VMs:** use your provider's snapshot or image feature for each instance's disk.
 
 ## 6. Where to look in Wazuh
 
