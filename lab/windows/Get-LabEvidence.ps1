@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Shows the security events behind a Wazuh alert, straight from win-client's
+    Shows the security events behind a Wazuh alert, straight from win-srv's
     own Security log, so you can compare "what Windows recorded" with "what
     the SIEM showed". Useful for the investigation section of each runbook.
 

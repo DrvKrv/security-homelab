@@ -4,7 +4,7 @@
     policy from Enable-AuditPolicy.ps1, an account lockout (event 4740).
 
 .DESCRIPTION
-    !!! Run this ONLY on your own lab VM (win-client). It only ever tries to log
+    !!! Run this ONLY on your own lab VM (win-srv). It only ever tries to log
     !!! on to THIS computer, but it will lock out the target account for 15 min.
     !!! Never point it at your real/daily account or at a work or school machine.
 
@@ -16,7 +16,7 @@
         backup, test), the way password-guessing tools behave.
     No real password is used or stored.
 
-    Expected in Wazuh (Threat Hunting > Events, filter agent.name:win-client):
+    Expected in Wazuh (Threat Hunting > Events, filter agent.name:win-srv):
       60122  Logon Failure - Unknown user or bad password   (one per attempt)
       60204  Multiple Windows Logon Failures                (after about 8)
       60115  User account locked out                        (after 5 on labuser)

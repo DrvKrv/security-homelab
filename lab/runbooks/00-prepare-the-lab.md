@@ -1,18 +1,20 @@
 # 00 · Prepare the lab
 
-Do this once, after the three VMs from `setup-plan.md` are built and both agents show **Active** in the Wazuh dashboard. It takes about 45 minutes.
+Do this once, after the three Azure VMs from `azure-setup-plan.md` are built and both agents show **Active** in the Wazuh dashboard. It takes about 45 minutes.
 
-| VM | Placeholder IP | Role in the exercises |
+Everything below happens **inside `win-srv`** (your RDP doorway into the lab): you open PowerShell there to SSH to the Linux VMs, and Edge there for the Wazuh dashboard.
+
+| VM | Fixed private IP | Role in the exercises |
 |---|---|---|
-| `wazuh` | 192.168.50.10 | SIEM, and also plays the "attacker" (saves RAM vs. a 4th VM) |
-| `win-client` | 192.168.50.20 | Employee laptop: failed logons, rogue admin account |
-| `linux-srv` | 192.168.50.30 | Company server: SSH brute force, firewall blocks, port scan |
+| `wazuh` | 10.0.1.10 | SIEM, and also plays the "attacker" (saves money vs. a 4th VM) |
+| `win-srv` | 10.0.1.20 | Company Windows server: failed logons, rogue admin account |
+| `linux-srv` | 10.0.1.30 | Company server: SSH brute force, firewall blocks, port scan |
 
-Replace these with your real IPs everywhere (find them with `ip -br addr` on Linux and `ipconfig` on Windows).
+These match the static IPs in the Azure plan. If yours differ, put your real ones in `lab.env` (step 1).
 
 ## 1. Get the lab files onto each VM
 
-**Linux VMs (`wazuh` and `linux-srv`)**, in each VM's terminal or over SSH from your Mac:
+**Linux VMs (`wazuh` and `linux-srv`)**: from PowerShell inside `win-srv`, SSH in (`ssh <username>@10.0.1.10`, then `ssh <username>@10.0.1.30`) and run:
 
 ```bash
 sudo apt-get update && sudo apt-get install -y git
@@ -22,9 +24,9 @@ cp lab.env.example lab.env
 nano lab.env            # put in your real IPs, then Ctrl+O, Enter, Ctrl+X
 ```
 
-If the repo is private, `git clone` will ask you to sign in. The easy alternative is to copy the folder from your Mac: `scp -r security-homelab/lab <user>@<vm-ip>:~/`.
+If the repo is private, `git clone` will ask you to sign in (use a GitHub personal access token as the password). The alternative is to download the ZIP on `win-srv` (below) and copy it over: `scp -r .\security-homelab-main\lab <username>@10.0.1.30:~/`.
 
-**Windows (`win-client`)**: in Edge, open the repo on GitHub, click **Code > Download ZIP**, extract it, then in an **administrator** PowerShell:
+**Windows (`win-srv`)**: in Edge, open the repo on GitHub, click **Code > Download ZIP**, extract it, then in an **administrator** PowerShell:
 
 ```powershell
 cd $HOME\Downloads\security-homelab-main\lab\windows
@@ -51,7 +53,7 @@ It backs up the old files, installs `local_rules.xml` and `local_decoder.xml`, c
 sudo /var/ossec/bin/agent_control -l
 ```
 
-That lists agents like `ID: 001, Name: win-client, IP: any, Active`. Your Windows agent may be called something like `DESKTOP-AB12CD3` instead; that's fine, just use that name wherever the runbooks say `win-client`. Use the IDs:
+That lists agents like `ID: 001, Name: win-srv, IP: any, Active`. If an agent has a different name, use that name wherever the runbooks say `win-srv` or `linux-srv`. Use the IDs:
 
 ```bash
 sudo /var/ossec/bin/agent_groups -a -i 001 -g windows -q
@@ -72,13 +74,15 @@ If a line doesn't match what the file says, copy the whole logtest output and se
 
 ## 3. Turn on Windows auditing
 
-Windows doesn't record most of the events we need until you tell it to. On **win-client**, in the admin PowerShell from step 1:
+Windows doesn't record most of the events we need until you tell it to. On **win-srv**, in the admin PowerShell from step 1:
+
+> ⚠️ This turns on account lockout (5 wrong passwords = locked for 15 minutes). `win-srv` is your only way into the lab, so type your own RDP password carefully. If you do lock yourself out, the lock clears itself after 15 minutes. To unlock sooner, in the Azure portal open `win-srv` > **Operations > Run command > RunPowerShellScript** and run `$u=[ADSI]"WinNT://./<your-admin-name>,user"; $u.IsAccountLocked=$false; $u.SetInfo()`.
 
 ```powershell
 .\Enable-AuditPolicy.ps1
 ```
 
-📸 **Screenshot** the `auditpol` and `net accounts` output at the end. In Wazuh you should see rule **60112 "Windows Audit Policy changed"** for win-client within a minute or two. That's your first proof that Windows → Wazuh works.
+📸 **Screenshot** the `auditpol` and `net accounts` output at the end. In Wazuh you should see rule **60112 "Windows Audit Policy changed"** for win-srv within a minute or two. That's your first proof that Windows → Wazuh works.
 
 Then create the test account that the failed-logon exercise targets (pick any password and **don't reuse a real one**):
 
@@ -101,10 +105,9 @@ This turns on the UFW firewall (SSH allowed from the lab subnet only, everything
 
 ## 5. Snapshot everything
 
-Take a snapshot of each VM and name it `baseline`. If an exercise goes wrong, restore it and start again.
+Optional but handy: in the Azure portal, open each VM > **Disks** > click the OS disk > **Create snapshot**, name it `<vm>-baseline`, and choose **Standard HDD** storage to keep it cheap. Snapshots cost a little per GB each month, so delete them when the project is done.
 
-- **VMware Fusion (Mac):** Virtual Machine > Snapshots > Take Snapshot.
-- **Cloud VMs:** use your provider's snapshot or image feature for each instance's disk.
+Restoring in Azure means creating a new disk from the snapshot and swapping it in (VM > Disks > **Swap OS disk**). For small mistakes, `Reset-Lab.ps1` and the scripts' `cleanup` options are quicker.
 
 ## 6. Where to look in Wazuh
 

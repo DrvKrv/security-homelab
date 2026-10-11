@@ -13,7 +13,7 @@
 #
 # Usage:
 #   bash simulate-ssh-bruteforce.sh                # target = LINUX_IP from lab.env
-#   bash simulate-ssh-bruteforce.sh 192.168.50.30 10
+#   bash simulate-ssh-bruteforce.sh 10.0.1.30 10
 
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
