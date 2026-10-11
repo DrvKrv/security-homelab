@@ -15,7 +15,7 @@ flowchart TB
         PIP["Public IP<br/>(win-srv only)"]
         subgraph VNET["homelab-vnet 10.0.0.0/16"]
             subgraph SUB["lab-subnet 10.0.1.0/24"]
-                WIN["win-srv · 10.0.1.20<br/>Windows Server 2022<br/>Jump host, Wazuh agent<br/>NSG: RDP from my IP only"]
+                WIN["win-srv · 10.0.1.20<br/>Windows Server 2025<br/>Jump host, Wazuh agent<br/>NSG: RDP from my IP only"]
                 WAZUH["wazuh · 10.0.1.10<br/>Ubuntu Server 24.04<br/>Wazuh manager, indexer, dashboard<br/>NSG: no inbound from internet"]
                 LNX["linux-srv · 10.0.1.30<br/>Ubuntu Server 24.04<br/>OpenSSH, ufw, Wazuh agent<br/>NSG: no inbound from internet"]
             end

@@ -22,7 +22,7 @@ the highest-priority ones, verify the fixes, and write it all up.
 |---|---|
 | **Cloud** | Microsoft Azure (Azure for Students): one resource group, one VNet, three VMs |
 | **SIEM** | Wazuh (manager, indexer and dashboard, all-in-one) |
-| **Endpoints** | Windows Server 2022 (also the jump host), Ubuntu Server 24.04 Linux server |
+| **Endpoints** | Windows Server 2025 (also the jump host), Ubuntu Server 24.04 Linux server |
 | **Access control** | Network Security Groups: only RDP to the jump host, only from my IP; everything else private |
 | **Telemetry** | Windows Security event log, Linux `auth.log` / syslog, firewall logs |
 | **Exercises** | Failed logins, account changes, blocked connections, authorized port scans |
@@ -35,7 +35,7 @@ flowchart LR
     ME["Analyst laptop<br/>(my home IP only)"]
     subgraph AZ["Azure: homelab-rg"]
         subgraph VNET["homelab-vnet 10.0.0.0/16 · lab-subnet 10.0.1.0/24"]
-            WIN["win-srv<br/>Windows Server 2022<br/>Jump host + Wazuh agent<br/>10.0.1.20"]
+            WIN["win-srv<br/>Windows Server 2025<br/>Jump host + Wazuh agent<br/>10.0.1.20"]
             WAZUH["wazuh<br/>Ubuntu 24.04<br/>Wazuh SIEM<br/>10.0.1.10"]
             LNX["linux-srv<br/>Ubuntu 24.04<br/>SSH + Wazuh agent<br/>10.0.1.30"]
         end
