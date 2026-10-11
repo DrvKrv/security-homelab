@@ -1,0 +1,29 @@
+<!--
+  Lab custom decoders -> install to /var/ossec/etc/decoders/local_decoder.xml
+  (setup-manager.sh does this for you and keeps a backup of the old file).
+
+  Why this exists:
+  Wazuh 4.x agents on Ubuntu 24.04 read logs from journald. Kernel messages
+  from journald do NOT start with the "[ 1234.5678]" uptime stamp, so the
+  built-in "ufw" decoder (which expects that stamp) never matches, and UFW
+  firewall blocks would be invisible. This decoder handles the journald form:
+
+    kernel: [UFW BLOCK] IN=ens160 OUT= MAC=... SRC=192.168.50.10 DST=192.168.50.30 ... PROTO=TCP SPT=51515 DPT=3306 ...
+
+  It pulls out who sent the packet (srcip), where it was going (dstip, dstport)
+  and the protocol, so the rules in local_rules.xml can group blocks by source.
+-->
+
+<decoder name="lab-ufw">
+  <parent>kernel</parent>
+  <prematch>^[UFW </prematch>
+  <regex>^[(UFW \w+)] \.+ SRC=(\S+) DST=(\S+)</regex>
+  <regex> \.+ PROTO=(\w+) </regex>
+  <order>action,srcip,dstip,protocol</order>
+</decoder>
+
+<decoder name="lab-ufw">
+  <parent>kernel</parent>
+  <regex offset="after_regex">^SPT=(\d+) DPT=(\d+) </regex>
+  <order>srcport,dstport</order>
+</decoder>
