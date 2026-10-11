@@ -44,3 +44,8 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# --- Cloud credentials ---
+.azure/
+*.publishsettings
+terraform.tfstate*

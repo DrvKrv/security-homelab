@@ -5,7 +5,7 @@
 > phase is completed. Nothing in this repo is invented: if a result is not here
 > yet, it has not happened yet.
 
-A small simulated company network built on a MacBook Air (Apple M4), used to
+A small simulated company network hosted in Microsoft Azure, used to
 practise the day-to-day workflow of a security operations / information
 security team: collect logs centrally, generate realistic security events,
 investigate the alerts, research vulnerabilities against public CVE data, fix
@@ -20,9 +20,10 @@ the highest-priority ones, verify the fixes, and write it all up.
 
 | | |
 |---|---|
+| **Cloud** | Microsoft Azure (Azure for Students): one resource group, one VNet, three VMs |
 | **SIEM** | Wazuh (manager, indexer and dashboard, all-in-one) |
-| **Endpoints** | Windows 11 (ARM64) workstation, Ubuntu Server 24.04 (ARM64) server |
-| **Hypervisor** | VMware Fusion Pro on macOS, isolated host-only lab network |
+| **Endpoints** | Windows Server 2022 (also the jump host), Ubuntu Server 24.04 Linux server |
+| **Access control** | Network Security Groups: only RDP to the jump host, only from my IP; everything else private |
 | **Telemetry** | Windows Security event log, Linux `auth.log` / syslog, firewall logs |
 | **Exercises** | Failed logins, account changes, blocked connections, authorized port scans |
 | **Outputs** | Asset inventory, network diagram, incident report, remediation tickets, security policy, CVE worksheet |
@@ -31,28 +32,39 @@ the highest-priority ones, verify the fixes, and write it all up.
 
 ```mermaid
 flowchart LR
-    subgraph HOST["MacBook Air M4 (host)"]
-        direction LR
-        subgraph LAB["Isolated lab network 192.168.50.0/24"]
-            WAZUH["wazuh<br/>Ubuntu 24.04 ARM64<br/>Wazuh SIEM<br/>192.168.50.10"]
-            WIN["win-client<br/>Windows 11 ARM64<br/>Wazuh agent<br/>192.168.50.20"]
-            LNX["linux-srv<br/>Ubuntu 24.04 ARM64<br/>SSH + Wazuh agent<br/>192.168.50.30"]
+    ME["Analyst laptop<br/>(my home IP only)"]
+    subgraph AZ["Azure: homelab-rg"]
+        subgraph VNET["homelab-vnet 10.0.0.0/16 · lab-subnet 10.0.1.0/24"]
+            WIN["win-srv<br/>Windows Server 2022<br/>Jump host + Wazuh agent<br/>10.0.1.20"]
+            WAZUH["wazuh<br/>Ubuntu 24.04<br/>Wazuh SIEM<br/>10.0.1.10"]
+            LNX["linux-srv<br/>Ubuntu 24.04<br/>SSH + Wazuh agent<br/>10.0.1.30"]
         end
-        ANALYST["Analyst browser<br/>(Wazuh dashboard)"]
     end
+    ME -- "RDP 3389 (NSG: my IP only)" --> WIN
+    WIN -- "HTTPS 443 dashboard, SSH 22" --> WAZUH
+    WIN -- "SSH 22" --> LNX
     WIN -- "agent events 1514/tcp" --> WAZUH
     LNX -- "agent events 1514/tcp" --> WAZUH
-    ANALYST -- "HTTPS 443" --> WAZUH
 ```
 
-IP addresses above are the planned values. See the full
-[network diagram](docs/network-diagram.md) and [asset inventory](docs/asset-inventory.md).
+Only `win-srv` has a public IP. The SIEM and the Linux server are reachable
+only from inside the VNet. See the full [network diagram](docs/network-diagram.md)
+and [asset inventory](docs/asset-inventory.md).
+
+### Why the cloud
+
+The lab runs in Azure rather than on my laptop, which added a second skill
+set to the project: designing a small cloud network, limiting exposure with
+Network Security Groups and a single jump host, and controlling cost
+(budget alerts, auto-shutdown, deallocating VMs when idle).
 
 ## What I did
 
-### 1. Built an isolated network
-`TODO` Short description of the lab network, how isolation was enforced, and
-when internet access was allowed (installs/updates only).
+### 1. Built a cloud lab network
+`TODO` Short description of the Azure setup: resource group, VNet and subnet,
+static private IPs, which NSG rules exist and why, how I confirmed nothing but
+RDP from my IP is reachable from the internet, and the budget and
+auto-shutdown guardrails.
 
 ### 2. Deployed a SIEM and centralized logging
 `TODO` Wazuh install, agents enrolled on both endpoints, which log sources are
@@ -65,9 +77,9 @@ Scripts and step-by-step procedures are in [`lab/`](lab/).
 
 | # | Scenario | Target | Expected evidence | Status |
 |---|---|---|---|---|
-| 1 | Repeated failed logins | win-client | Event ID 4625, account lockout 4740 | `TODO` |
+| 1 | Repeated failed logins | win-srv | Event ID 4625, account lockout 4740 | `TODO` |
 | 2 | SSH brute-force attempts | linux-srv | `sshd` "Failed password" in `auth.log` | `TODO` |
-| 3 | Local account created and added to Administrators | win-client | Event IDs 4720, 4732 | `TODO` |
+| 3 | Local account created and added to Administrators | win-srv | Event IDs 4720, 4732 | `TODO` |
 | 4 | Blocked inbound connection | linux-srv | `ufw` BLOCK entries | `TODO` |
 | 5 | Authorized port scan (nmap) | linux-srv | Firewall / connection logs | `TODO` |
 
@@ -117,11 +129,12 @@ differently, and what I would add next.
 
 ## Scope and ethics
 
-- Every scan and simulated attack targeted only virtual machines I built and
-  own, on an isolated network. Nothing was pointed at my home network, my ISP,
-  or anyone else's systems.
-- No real credentials, keys, agent enrollment secrets, or unredacted logs are
-  published. See [`docs/publishing-checklist.md`](docs/publishing-checklist.md).
+- Every scan and simulated attack ran inside my own Azure VNet against virtual
+  machines I created. Microsoft permits testing your own Azure resources;
+  nothing was pointed at other Azure customers, my home network, or anyone
+  else's systems.
+- No real credentials, keys, agent enrollment secrets, subscription IDs,
+  public IP addresses, or unredacted logs are published. See [`docs/publishing-checklist.md`](docs/publishing-checklist.md).
 
 ## Next steps
 

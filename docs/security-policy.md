@@ -63,10 +63,14 @@ workstations and the SIEM. It applies to anyone with an account on those systems
 
 ## 7. Network security
 
-- The lab network is isolated from the home/corporate network.
-- Internet access from lab systems is enabled only for updates.
+- Lab systems run in a dedicated Azure virtual network. Only the jump host has
+  a public IP address; all other systems are reachable only from inside the VNet.
+- Inbound access from the internet is limited to Remote Desktop on the jump
+  host, from approved source IP addresses only, enforced by Network Security Groups.
 - Host firewalls are enabled on all systems; only required ports are open
   (see [network diagram](network-diagram.md)).
+- Cloud spending is monitored with budget alerts, and idle systems are
+  deallocated or shut down automatically.
 
 ## 8. Incident response
 
