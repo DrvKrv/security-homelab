@@ -13,7 +13,7 @@ if the real build differs.
 |---|---|
 | Provider | Microsoft Azure (Azure for Students) |
 | Subscription | `<REDACTED>`: never publish the subscription or tenant ID |
-| Region | `TODO e.g. West US 2` |
+| Region | West US 2 |
 | Resource group | `homelab-rg` |
 | Virtual network | `homelab-vnet`, 10.0.0.0/16 |
 | Subnet | `lab-subnet`, 10.0.1.0/24 |
@@ -23,9 +23,9 @@ if the real build differs.
 
 | Hostname | Role | OS and version | Azure size | Private IP | Public IP | Criticality | Owner | Wazuh agent | Auto-shutdown |
 |---|---|---|---|---|---|---|---|---|---|
-| `wazuh` | SIEM server (manager, indexer, dashboard) | Ubuntu Server 24.04 LTS `TODO exact build` | B2ms (2 vCPU, 8 GB), 50 GB SSD | 10.0.1.10 (static) | None | High | KT | n/a (is the manager) | `TODO` |
-| `win-srv` | Windows server and jump host | Windows Server 2022 Datacenter `TODO build` | B2s (2 vCPU, 4 GB), 127 GB SSD | 10.0.1.20 (static) | Yes (`<REDACTED>`) | High | KT | `TODO version` | `TODO` |
-| `linux-srv` | Company Linux server (SSH) | Ubuntu Server 24.04 LTS `TODO exact build` | B1ms (1 vCPU, 2 GB), 30 GB SSD | 10.0.1.30 (static) | None | Medium | KT | `TODO version` | `TODO` |
+| `wazuh` | SIEM server (manager, indexer, dashboard) | Ubuntu Server 24.04 LTS `TODO exact build` | B2as_v2 (2 vCPU, 8 GB), `TODO disk` | 10.0.1.10 (static) | None | High | KT | n/a (is the manager) | `TODO` |
+| `win-srv` | Windows server and jump host | Windows Server 2025 Datacenter, x64 Gen2 (not Azure Edition; patched manually) `TODO build` | B2als_v2 (2 vCPU, 4 GB), `TODO disk` | 10.0.1.20 (static) | Yes (`<REDACTED>`) | High | KT | `TODO version` | `TODO` |
+| `linux-srv` | Company Linux server (SSH) | Ubuntu Server 24.04 LTS `TODO exact build` | B2ats_v2 (2 vCPU, 1 GB), `TODO disk` | 10.0.1.30 (static) | None | Medium | KT | `TODO version` | `TODO` |
 
 **Criticality scale:** High = loss would blind monitoring or remove the only
 way into the lab; Medium = a single business system; Low = disposable.
