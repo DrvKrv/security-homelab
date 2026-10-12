@@ -57,7 +57,7 @@ effective security rules screenshot, the break-one-layer result, and a passing
 verify.
 
 ## Hints
-1. `bash lab/zones/check-segmentation.sh` on web-srv runs the whole DMZ-side test for you.
+1. `bash lab/stages/4-zones/check-segmentation.sh` on web-srv runs the whole DMZ-side test for you.
 2. On win-srv, `Test-NetConnection 10.0.1.50 -Port 389` should say `True`; from web-srv the same port must fail.
 3. Portal: web-srv > Networking > the network interface > Effective security rules.
 4. With only the internal firewall left, traffic from the DMZ is still refused at the internal subnet; that's defence in depth.
