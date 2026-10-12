@@ -82,7 +82,8 @@ gives 5762 (level 4) with no correlation rule, a detection gap KT noticed.
 | `docs/plan/` | **The plans:** roadmap, lesson grid, setup guides, later units |
 | `lab/wazuh/`, `lab/linux/`, `lab/windows/`, `lab/runbooks/` | Wazuh rules/decoders, simulation scripts, setup runbook |
 | `lab/exercises/` | Lesson grid (7 tracks × 5 levels): `./run.sh list / start / stage / hint / reveal / verify`. Authoring rules in `LESSON-GUIDE.md`; run `bash lib/check-lessons.sh` before committing a lesson |
-| `lab/stages/` | Units 6–7: web-srv (site, portal, Juice Shop) and dc01 (AD scripts). Built, not deployed |
+| `lab/stages/` | Units 6–10: web-srv (site, portal, Juice Shop), dc01 (AD scripts), zones checker, capstone investigation kit |
+| `lab/wazuh/tests/` | Rule tests: `test-rules.sh` on the wazuh VM, `test-rules-docker.sh` anywhere with Docker |
 | `infra/` | Units 5+: Terraform for the lab, with KT exercises and an answers folder |
 
 ## The curriculum
@@ -116,7 +117,11 @@ across before up; concepts spiral back in each new environment.
   Cloud Shell.
 - 📦 Units 6–7: `lab/stages/` merged, not deployed. dc01 PowerShell is untested
   on real Windows. Attack scenarios and busy-office noise are placeholders.
-- 📝 Units 4, 8, 9, 10: plan only.
+- 📦 Unit 4: Sysmon, Suricata, rule tests and lessons built (runbook 06). Sysmon
+  untested on real Windows; Suricata and rule tests tested in containers.
+- 📦 Unit 8: `infra/zones.tf` + exercise 06 + `lab/stages/4-zones/` checker.
+- 📝 Unit 9: busy-office generator not built (placeholder).
+- 📦 Unit 10: investigation kit only (`lab/stages/6-capstone/`); no automated breach.
 
 When work lands, update the status markers here and in
 `docs/plan/curriculum-roadmap.md`. Check open PRs before starting, since work
