@@ -17,8 +17,8 @@ you) delete, kill any live sessions, and make sure you're not destroying evidenc
 you still need (you investigated in Level 2, so you're clear to act here).
 
 ## Your mission
-A rogue admin account (`svc_backup`) exists on linux-srv. Remove it safely and
-prove it's gone:
+A rogue admin account exists on linux-srv (find its name in Wazuh first, as in
+Level 1). Remove it safely and prove it's gone:
 1. **Revoke** its admin rights.
 2. **Terminate** any processes/sessions it owns.
 3. **Delete** the account and its home directory.
@@ -33,9 +33,9 @@ prove it's gone:
 3. Confirm with read-only checks, then let the verifier confirm independently.
 4. Capture the before/after in your case file — that contrast is the proof.
 
-> The lab ships a cleanup command (shown by `./run.sh reset`) that does this
-> correctly. Try it **by hand first** to learn the steps; use the reset if you
-> get stuck or to reset between attempts.
+> `./run.sh reset 3/linux-backdoor-user` runs a correct cleanup for you. Try it
+> **by hand first** to learn the steps; use the reset if you get stuck or to
+> start over.
 
 ## Predict before you run
 If you delete the account but forget to remove it from `sudo` first, or forget
@@ -51,4 +51,4 @@ and the verification output (after) proving it's gone — including a passing
 1. Order matters: take away admin rights before deleting, so there's no window where a privileged session lingers.
 2. A logged-in or running account can't always be deleted cleanly — terminate its processes first.
 3. Deleting the user is not the same as deleting their home directory. Use the option that removes both, or the home dir lingers.
-4. Verify with `getent passwd svc_backup` (should return nothing), `getent group sudo` (should not list it), and check `/home/svc_backup` is gone. Then run the automated verifier.
+4. Verify with `getent passwd <account>` (should return nothing), `getent group sudo` (should not list it), and check `/home/<account>` is gone. Then run the automated verifier.

@@ -42,20 +42,32 @@ Run the menu from the `lab/exercises/` directory:
 ./run.sh list                      # see all levels and variants
 ./run.sh start 1                   # a random Level 1 exercise
 ./run.sh start 1/ssh-bruteforce    # a specific one
+./run.sh stage 1/ssh-bruteforce    # stage the incident quietly (on the VM the brief names)
 ./run.sh hint 1/ssh-bruteforce     # reveal the next hint (progressive)
 ./run.sh reveal 1/ssh-bruteforce   # show the full answer key
 ./run.sh verify 3/linux-backdoor-user   # auto-check your fix (where supported)
-./run.sh reset 3/linux-backdoor-user    # show how to return to a clean state
+./run.sh reset 3/linux-backdoor-user    # undo the staged incident (asks first)
 ```
 
-`start` prints the brief, tells you exactly **which VM** to stage the incident
-on and **what command** to run there, and gives you a Wazuh search to begin from.
-You then investigate in the Wazuh dashboard and fill a case file.
+`start` prints the brief, tells you **which VM** stages the incident, and gives
+you a neutral Wazuh search to begin from. Then run `./run.sh stage <id>` on that
+VM. Staging runs **quietly**: you see "Done", not a play-by-play, because the
+script's own output would tell you the answers. The full output is saved to a
+log file (the path is printed) so you can compare it with your findings
+afterwards. You then investigate in the Wazuh dashboard and fill a case file.
 
-- **Where to run the runner:** for Level 1–2 you can run it anywhere you have the
-  repo (it just prints guidance). For Level 3–4 the `verify`/`reset` steps act on
-  a specific VM, so run the runner **on that VM** (noted at the top of each
-  brief).
+- **Each staging VM needs its own copy of the repo.** The Linux network
+  exercises stage from **wazuh**; the account-change, Level 3 Linux and Level 4
+  exercises stage on **linux-srv**; the Windows ones stage on **win-srv**. Clone
+  the repo on each VM you use (on win-srv, install Git for Windows or download
+  the repo as a ZIP). If you run `stage` on the wrong VM, it tells you which one
+  to use instead.
+- **Windows exercises:** `./run.sh stage` prints a one-line PowerShell command.
+  Run it in an Administrator PowerShell from the repo's `lab\` folder on win-srv.
+  It also prints only "Done" and saves the details to a log in `%TEMP%`.
+- **Where to run the runner otherwise:** `start`, `hint` and `reveal` work
+  anywhere you have the repo. For Level 3–4 the `verify`/`reset` steps act on a
+  specific VM, so run them **on that VM** (noted at the top of each brief).
 - **Case files:** copy `case-file-template.md` for each exercise. A filled case
   file is a portfolio entry and interview prep in one.
 

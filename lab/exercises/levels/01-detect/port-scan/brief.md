@@ -20,9 +20,9 @@ linux-srv was just scanned. From Wazuh, determine:
    services/versions are behind them.
 
 ## The analyst workflow
-1. **Threat Hunting > Events**, last 15 minutes. You'll see a flood of UFW-block
-   alerts (100100) and then a **port-scan** correlation alert (100102) once the
-   volume crosses the threshold.
+1. **Threat Hunting > Events**, last 15 minutes. Expect a flood of individual
+   firewall-block alerts, and look for the single correlation alert that fires
+   once the volume crosses a threshold. Note both rule IDs yourself.
 2. Confirm the source IP and that it's a single host.
 3. The scan also did **version detection**. Service names and versions are gold:
    they're what you look up against CVEs in Level 4. Note any software versions

@@ -14,6 +14,7 @@
 #   ./run.sh list
 #   ./run.sh start 1                 # random Level 1 exercise
 #   ./run.sh start 1/ssh-bruteforce  # a specific one
+#   ./run.sh stage 1/ssh-bruteforce  # stage it quietly (on the VM the brief names)
 #   ./run.sh hint 1/ssh-bruteforce
 #   ./run.sh reveal 1/ssh-bruteforce
 #   ./run.sh verify 3/linux-backdoor-user
@@ -26,6 +27,7 @@ cmd="${1:-list}"; shift || true
 case "$cmd" in
   list|ls)        cmd_list ;;
   start|begin)    [[ $# -ge 1 ]] || { c_red "Usage: ./run.sh start <level>[/<variant>]"; exit 1; }; cmd_start "$1" ;;
+  stage)          [[ $# -ge 1 ]] || { c_red "Usage: ./run.sh stage <level>/<variant>"; exit 1; }; cmd_stage "$1" ;;
   hint)           [[ $# -ge 1 ]] || { c_red "Usage: ./run.sh hint <level>/<variant>"; exit 1; }; cmd_hint "$1" ;;
   reveal|answer)  [[ $# -ge 1 ]] || { c_red "Usage: ./run.sh reveal <level>/<variant>"; exit 1; }; cmd_reveal "$1" ;;
   verify|check)   [[ $# -ge 1 ]] || { c_red "Usage: ./run.sh verify <level>/<variant>"; exit 1; }; cmd_verify "$1" ;;
