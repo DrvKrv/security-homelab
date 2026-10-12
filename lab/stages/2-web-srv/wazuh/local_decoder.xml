@@ -1,0 +1,16 @@
+<!--
+  Decoder for the Acme portal auth log. Append to the manager's
+  /var/ossec/etc/decoders/local_decoder.xml (don't overwrite the file).
+  Test with:
+    echo '2026-10-12T00:00:00Z acme-portal AUTH result=failure user=demo.user src=10.0.1.20' \
+      | /var/ossec/bin/wazuh-logtest
+-->
+<decoder name="acme-portal">
+  <prematch>acme-portal AUTH </prematch>
+</decoder>
+
+<decoder name="acme-portal-fields">
+  <parent>acme-portal</parent>
+  <regex>result=(\w+) user=(\S+) src=(\S+)</regex>
+  <order>status, srcuser, srcip</order>
+</decoder>

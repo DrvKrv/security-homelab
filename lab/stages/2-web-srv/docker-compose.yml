@@ -1,0 +1,41 @@
+# Acme Corp web stack for web-srv (10.0.1.40), lab network only.
+#
+#   acme-web      nginx: serves the company website and proxies /portal/
+#   acme-portal   the employee portal (Flask)        - the "normal" app
+#   training-app  OWASP Juice Shop (official image)   - the target you practise on
+#
+# Started by install.sh. All ports bind to the VM and are only reachable inside
+# the lab VNet (web-srv has no public IP, and install.sh refuses to run if it does).
+services:
+  acme-web:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./site:/usr/share/nginx/html:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - /var/log/acme-web:/var/log/nginx
+    depends_on:
+      - acme-portal
+
+  acme-portal:
+    build: ./portal
+    restart: unless-stopped
+    environment:
+      PORTAL_DB: /data/portal.db
+      PORTAL_LOG_DIR: /var/log/acme-portal
+      PORTAL_SECRET_KEY: ${PORTAL_SECRET_KEY:-change-me-in-lab}
+    volumes:
+      - ./generated:/data
+      - /var/log/acme-portal:/var/log/acme-portal
+    expose:
+      - "8000"
+
+  # Established, official training target. Pulled from Docker Hub; not built here.
+  # Juice Shop is a widely used, purpose-built security-training application.
+  training-app:
+    image: bkimminich/juice-shop:v17.1.1
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
