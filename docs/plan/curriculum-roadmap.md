@@ -22,9 +22,9 @@ after them should delay finishing it.
 |---|---|---|---|---|
 | 1 | Build the lab | ✅ | built | Cloud setup, networking, SIEM install |
 | 2 | First incidents + case study | 🔄 | none | The defender workflow: detect, investigate, fix, report |
-| 3 | Practice range | 🔄 started | none | Repetition on the same skills, harder each level |
+| 3 | Practice range | 🔄 round 1 built | none | Repetition on the same skills, harder each level |
 | 4 | Detection engineering | 📝 | none | Writing and testing your own alerts |
-| 5 | Lab as code (Terraform) | 📦 draft PR #6 | none | Infrastructure as code, cloud engineering |
+| 5 | Lab as code (Terraform) | 📦 | none | Infrastructure as code, cloud engineering |
 | 6 | Company website (web-srv) | 📦 | Linux | Web security, vulnerability management |
 | 7 | Company accounts (dc01, Active Directory) | 📦 | Windows | Identity and access |
 | 8 | Network zones | 📝 | none | Segmentation, firewalls, network monitoring |
@@ -64,22 +64,18 @@ You learn: the core defender workflow, and writing it up so a recruiter can foll
 
 ## Unit 3. Practice range 🔄 (`lab/exercises/`, merged)
 
-> Being reworked (2026-10-12) to follow the lesson grid in
-> [curriculum-lessons.md](curriculum-lessons.md). The table below is the original runner.
+The lesson grid from [curriculum-lessons.md](curriculum-lessons.md), as a runner:
+`./run.sh list` shows every box and how many of its lessons you can run now. Each
+lesson quietly stages an incident; you find it, work it out, and check yourself
+with hints, the answer key or `./run.sh verify`.
 
-Repeatable exercises. Each one quietly stages an incident; you find it, work it out,
-and check yourself with hints or the answer key.
+| Round | Status |
+|---|---|
+| 1 (current three VMs) | ✅ written: every A, B, C, D box at L1–L3 has a lesson. 📝 Not yet run on the live VMs |
+| 2–8 (later environments) | 🔄 some written as readable briefs; tracks E and G and most L4/L5 boxes still to write |
 
-| Level | Skill | Variants | Status |
-|---|---|---|---|
-| 1 Detect | Notice it and find the alert | 6 | 🔄 started (SSH brute force) |
-| 2 Investigate | Build a timeline, reach a conclusion | 3 | 📝 |
-| 3 Respond | Contain, clean up, prove it's clean | 2 | 📝 |
-| 4 Vulnerabilities | Inventory, CVEs, prioritize, patch | 1 | 📝 |
-| 5 Detection engineering | **Write your own Wazuh rule** | 1 | 📝 |
-
-Levels 1 and 2 overlap with Unit 2, so they count toward the case study too.
-Level 5 is where you write your first rule yourself (the earlier rules are worked examples).
+L1 and L2 lessons overlap with Unit 2, so they count toward the case study too.
+A4 "write your own first Wazuh rule" is where you write a rule yourself (the earlier rules are worked examples).
 
 ## Unit 4. Detection engineering 📝 (no new VMs)
 
@@ -92,7 +88,7 @@ In Unit 2 you *read* alerts. Here you *build* them.
 - **Active response**: auto-block an IP after repeated failures (test on linux-srv only, never win-srv).
 - Optional: Microsoft **Defender for Cloud** free tier on your Azure account.
 
-## Unit 5. Lab as code (Terraform) 📦 (draft PR #6, `infra/`)
+## Unit 5. Lab as code (Terraform) 📦 (`infra/`, merged)
 
 The whole lab described in files under `infra/`, so it rebuilds with one command.
 Do it **before Unit 6**, so web-srv is the first machine you build with code.
@@ -105,8 +101,8 @@ How you learn it (not just run it):
 5. **Import:** bring your 3 hand-built VMs under code.
 
 Useful beyond security: cloud engineering, cloud security, and reproducible, auditable systems.
-The starting files are written (draft PR #6). Only `terraform fmt` has been run on them so far;
-`terraform init` + `validate` in Azure Cloud Shell is the first step.
+The starting files are merged and pass `terraform validate`. Nothing has been planned or
+applied yet: `terraform init` + `plan` in Azure Cloud Shell is the first step.
 
 ## Unit 6. Company website: web-srv 📦 (PR #5, merged)
 
@@ -178,4 +174,4 @@ the risk of never finishing.
 - The ideas behind the lab: [concepts.md](concepts.md)
 - Detection engineering: [detection-engineering.md](detection-engineering.md)
 - Stages, deploy steps, randomness, lab as code: [expansion-stages.md](expansion-stages.md)
-- In the repo: `lab/exercises/README.md`, `lab/stages/README.md`, `infra/README.md` (PR #6)
+- In the repo: `lab/exercises/README.md`, `lab/stages/README.md`, `infra/README.md`

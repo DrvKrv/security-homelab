@@ -11,3 +11,5 @@ EX_WAZUH_SEARCH="agent.name: win-srv"
 EX_HAS_VERIFY="no"
 EX_STAGE_CONFIRM="no"
 EX_ATTACK="T1053.005"
+# The concept section explains what event 4698 is, on purpose.
+EX_CHECK_ALLOW="4698"
