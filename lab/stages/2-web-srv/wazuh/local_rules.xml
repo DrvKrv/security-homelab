@@ -1,0 +1,35 @@
+<!--
+  Detection rules for the Acme portal auth log. Append to the manager's
+  /var/ossec/etc/rules/local_rules.xml (don't overwrite the file), then restart
+  wazuh-manager. Rule IDs 100400-100499 are a free local range.
+
+  These are starter rules. Part of the Phase 2 learning is to TUNE them:
+  adjust the brute-force threshold, add rules for the training app, and write
+  down why. Predict first: with the office-noise generator running later, will
+  rule 100402 fire on normal days? What threshold keeps it quiet but honest?
+-->
+<group name="acme,portal,authentication,">
+
+  <rule id="100400" level="3">
+    <decoded_as>acme-portal</decoded_as>
+    <field name="status">success</field>
+    <description>Acme portal: successful login for $(srcuser) from $(srcip)</description>
+  </rule>
+
+  <rule id="100401" level="5">
+    <decoded_as>acme-portal</decoded_as>
+    <field name="status">failure</field>
+    <description>Acme portal: failed login for $(srcuser) from $(srcip)</description>
+  </rule>
+
+  <!-- Many failures from one source in a short window: possible brute force. -->
+  <rule id="100402" level="10" frequency="6" timeframe="120">
+    <if_matched_sid>100401</if_matched_sid>
+    <same_source_ip />
+    <description>Acme portal: possible brute force - repeated failed logins from $(srcip)</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+</group>
