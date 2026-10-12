@@ -1,0 +1,6 @@
+# Lab state the scripts write on the DC (passwords, seeds) stays local, never committed.
+# These live in C:\LabState on dc01 by default; this guards against accidental copies here.
+lab-credentials.csv
+dsrm-password.txt
+seed.txt
+LabState/

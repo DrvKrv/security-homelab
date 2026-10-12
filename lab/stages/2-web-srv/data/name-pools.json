@@ -1,0 +1,25 @@
+{
+  "first_names": ["Alex","Jordan","Taylor","Morgan","Casey","Riley","Jamie","Avery","Quinn","Parker","Sam","Drew","Reese","Rowan","Skyler","Cameron","Hayden","Emerson","Finley","Dakota","Blair","Charlie","Elliot","Harper","Kai","Logan","Marley","Noel","Oakley","Phoenix","Sage","Tatum","Wren","Ari","Bellamy","Cody","Devon","Ellis","Frankie","Gray","Hollis","Indigo","Jules","Kendall","Lane","Micah","Nico","Ocean","Perry","Remy","Shiloh","Toby","Val","Wes","Zion","Ada","Bo","Cleo","Dash","Eve","Flynn","Gia","Hugo","Ivy","Jude","Lux","Mira","Nash","Odette","Pax","Rune","Soren","Thea","Uma","Vera","Wade","Xander","Yael","Zara"],
+  "last_names": ["Rivera","Chen","Okafor","Nguyen","Patel","Kim","Garcia","Haddad","Johansson","Silva","Novak","Khan","Rossi","Dubois","Andersson","Costa","Martin","Fischer","Ivanov","Yamamoto","Mwangi","Singh","Lopez","Weber","Moreau","Jensen","Kowalski","Ferrari","Schmidt","Nakamura","Abbas","Petrov","Lindqvist","Morales","Hassan","Reyes","Dimitriou","Vasquez","Bauer","Larsen","Mensah","Osei","Park","Romano","Sato","Tanaka","Underwood","Vega","Wallace","Zhang","Adeyemi","Bianchi","Castro","Delgado","Eriksson","Farah","Gupta","Holm","Ito","Jovanovic","Keller","Lam","Munoz","Nasser","Olsen","Pereira","Quintero","Radic","Sousa","Tran","Varga","Wagner","Yousef","Zimmerman"],
+  "departments": [
+    {"name": "Engineering", "code": "eng", "size": [6, 12]},
+    {"name": "Sales", "code": "sales", "size": [4, 8]},
+    {"name": "Marketing", "code": "mkt", "size": [3, 6]},
+    {"name": "Finance", "code": "fin", "size": [2, 5]},
+    {"name": "Human Resources", "code": "hr", "size": [2, 4]},
+    {"name": "IT", "code": "it", "size": [2, 4]},
+    {"name": "Operations", "code": "ops", "size": [3, 6]},
+    {"name": "Customer Support", "code": "support", "size": [4, 9]}
+  ],
+  "titles": {
+    "Engineering": ["Software Engineer","Senior Software Engineer","Engineering Manager","QA Engineer","DevOps Engineer","Staff Engineer"],
+    "Sales": ["Account Executive","Sales Development Rep","Sales Manager","Regional Sales Lead"],
+    "Marketing": ["Marketing Specialist","Content Strategist","Marketing Manager","Growth Analyst"],
+    "Finance": ["Financial Analyst","Accountant","Finance Manager","Controller"],
+    "Human Resources": ["HR Generalist","Recruiter","HR Manager","People Operations Lead"],
+    "IT": ["IT Support Technician","Systems Administrator","IT Manager","Help Desk Analyst"],
+    "Operations": ["Operations Analyst","Operations Manager","Logistics Coordinator","Facilities Lead"],
+    "Customer Support": ["Support Agent","Senior Support Agent","Support Team Lead","Customer Success Manager"]
+  },
+  "personas": ["early_bird", "night_owl", "nine_to_five", "typo_prone", "heavy_file_user", "rare_login", "road_warrior"]
+}
