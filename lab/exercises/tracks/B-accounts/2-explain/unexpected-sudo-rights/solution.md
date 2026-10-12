@@ -19,7 +19,8 @@ would become your next question: was it really that person?
 - **Wazuh, file integrity:** a syscheck alert for a file **added** under
   `/etc/sudoers.d/` (rule 554), with the line shown in the diff because the lab
   agent config sets `report_changes` on that folder. Its timestamp is "when".
-- **Wazuh, sudo log:** rule 5402 ("Successful sudo to ROOT executed") with
+- **Wazuh, sudo log:** rule 5402 ("Successful sudo to ROOT executed"), or
+  5403 ("First time user executed sudo") if it's that account's first sudo, with
   `data.srcuser` = your admin account and `data.command` showing `install ...
   /etc/sudoers.d/<file>`, plus a `visudo -cf` just before it.
 - **Wazuh, login:** an sshd authentication success (5715) for your admin account
@@ -32,7 +33,7 @@ would become your next question: was it really that person?
    and still dangerous once that password is set.
 2. A file in `/etc/sudoers.d/`, the line in this run's `grant`.
 3. Your admin account, via sudo, in an SSH session from win-srv; the time from the
-   5402 and syscheck alerts.
+   sudo (5402/5403) and syscheck alerts.
 4. The lab's loud sudo alert, rule 100110 (level 10), is chained to the
    built-in "user added to group" event (2961). No group changed, so it had
    nothing to fire on. File integrity monitoring on

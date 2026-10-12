@@ -198,12 +198,17 @@ Re-read the concept, mission, workflow and predict sections as the learner would
 ## Facts you can rely on
 
 Use only these specific ids. For anything else, describe the alert and ask the
-learner to note its id.
+learner to note its id. The Wazuh ids below were checked against Wazuh 4.12's
+own ruleset; `lab/wazuh/tests/` keeps the ones the lessons lean on under test
+(`bash lab/wazuh/test-rules-docker.sh`). If you add a lesson that relies on a
+rule firing, add a test for it there too.
 
 - **Wazuh built-in:** 5710 (sshd attempt to log in as a non-existent user), 5712
   (sshd brute force, many non-existent users), 5760 (sshd authentication failed),
-  5763 (sshd brute force), 5762 (sshd connection reset), 5715 (sshd authentication
-  success), 5501/5502 (PAM login session opened/closed), 5402 (successful sudo to ROOT),
+  5763 (sshd brute force), 5762 (sshd connection reset, level 4), 5722 (sshd
+  connection closed, level 0: decoded but never an alert), 5715 (sshd authentication
+  success), 5501/5502 (PAM login session opened/closed), 5402 (successful sudo to
+  ROOT) and 5403 (the first time an account uses sudo),
   5902 (new user added), 5903 (user deleted), 2961 (user added to a group), 5555
   (password changed), 550/554 (file-integrity: file modified / added), 553 (file
   deleted), 60122 (Windows logon failure), 60204 (multiple Windows logon failures),

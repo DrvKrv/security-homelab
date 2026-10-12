@@ -1,0 +1,20 @@
+# web-srv's portal rules (lab/stages/2-web-srv/wazuh/). Load those on the
+# manager first, as that stage's wazuh/README.md says, or these fail.
+
+[portal login failure]
+log: 2026-10-12T00:00:00Z acme-portal AUTH result=failure user=demo.user src=10.0.1.20
+rule: 100401
+level: 5
+field: srcuser=demo.user
+field: srcip=10.0.1.20
+
+[portal login success]
+log: 2026-10-12T00:00:00Z acme-portal AUTH result=success user=demo.user src=10.0.1.20
+rule: 100400
+level: 3
+
+[six portal failures from one source become a brute force]
+log: 2026-10-12T00:00:00Z acme-portal AUTH result=failure user=demo.user src=10.0.1.20
+repeat: 6
+rule: 100402
+level: 10

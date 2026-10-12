@@ -1,0 +1,69 @@
+# Built-in Wazuh rules the lessons rely on, plus the lab's sudo-group rule.
+# If an upgrade changes one of these, the lessons' answer keys need updating.
+
+[invalid SSH user]
+log: Oct 11 21:41:10 linux-srv sshd[2345]: Invalid user admin from 10.0.1.10 port 40122
+rule: 5710
+level: 5
+field: srcip=10.0.1.10
+
+[eight invalid users become a brute force]
+log: Oct 11 21:41:10 linux-srv sshd[2345]: Invalid user admin from 10.0.1.10 port 40122
+repeat: 8
+rule: 5712
+level: 10
+
+[wrong password for a real user]
+log: Oct 11 21:42:05 linux-srv sshd[2350]: Failed password for labuser from 10.0.1.10 port 40130 ssh2
+rule: 5760
+level: 5
+
+[eight wrong passwords become a brute force]
+log: Oct 11 21:42:05 linux-srv sshd[2350]: Failed password for labuser from 10.0.1.10 port 40130 ssh2
+repeat: 8
+rule: 5763
+level: 10
+
+[key login succeeds]
+log: Oct 12 06:14:30 linux-srv sshd[10460]: Accepted publickey for azureuser from 10.0.1.20 port 50111 ssh2: ED25519 SHA256:abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG
+rule: 5715
+level: 3
+field: srcip=10.0.1.20
+
+[connection reset before login is a low alert]
+log: Oct 12 06:14:27 linux-srv sshd[10456]: Connection reset by authenticating user labuser 10.0.1.10 port 57179 [preauth]
+rule: 5762
+level: 4
+
+[connection closed before login is NOT an alert (level 0)]
+log: Oct 12 06:14:26 linux-srv sshd[10455]: Connection closed by authenticating user labuser 10.0.1.10 port 57178 [preauth]
+rule: 5722
+level: 0
+
+[sudo command]
+log: Oct 12 06:14:40 linux-srv sudo[10470]: azureuser : TTY=pts/0 ; PWD=/home/azureuser ; USER=root ; COMMAND=/usr/bin/ls
+log: Oct 12 06:14:41 linux-srv sudo[10471]: azureuser : TTY=pts/0 ; PWD=/home/azureuser ; USER=root ; COMMAND=/usr/bin/ls
+rule: 5402
+level: 3
+field: srcuser=azureuser
+field: command=/usr/bin/ls
+
+[first sudo by an account]
+log: Oct 12 06:14:40 linux-srv sudo[10470]: azureuser : TTY=pts/0 ; PWD=/home/azureuser ; USER=root ; COMMAND=/usr/bin/ls
+rule: 5403
+level: 4
+
+[new Linux user]
+log: Oct 11 21:43:00 linux-srv useradd[2400]: new user: name=svc_backup, UID=1002, GID=1002, home=/home/svc_backup, shell=/bin/bash, from=/dev/pts/0
+rule: 5902
+level: 8
+
+[user added to sudo is raised by the lab rule]
+log: Oct 11 21:43:05 linux-srv gpasswd[2410]: user svc_backup added by kt to group sudo
+rule: 100110
+level: 10
+
+[user deleted]
+log: Oct 11 21:50:00 linux-srv userdel[2500]: delete user 'svc_backup'
+rule: 5903
+level: 3
