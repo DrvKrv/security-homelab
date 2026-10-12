@@ -57,7 +57,7 @@ touch dc01 or the core VMs. Then `terraform apply`.
 ## Step 4: prove it
 
 1. **From web-srv** (SSH from win-srv to 10.0.2.40), run
-   `bash /opt/security-homelab/lab/zones/check-segmentation.sh`. It should PASS.
+   `bash /opt/security-homelab/lab/stages/4-zones/check-segmentation.sh`. It should PASS.
 2. **Prove the PASS means something.** A port that's "blocked" because the
    machine is switched off proves nothing. From win-srv (internal), check the
    same targets answer:

@@ -2,7 +2,7 @@
 # check-segmentation.sh - proves the network zones work (unit 8).
 # Run ON web-srv, after `terraform apply` with enable_zones = true.
 #
-#   bash lab/zones/check-segmentation.sh
+#   bash lab/stages/4-zones/check-segmentation.sh
 #
 # It opens one ordinary TCP connection to each address and port below and
 # closes it straight away (nc -z), the same check you'd do by hand. It only
@@ -17,7 +17,7 @@
 # answer there (exercise 06 shows the PowerShell line). Read-only.
 
 set -uo pipefail
-source "$(dirname "${BASH_SOURCE[0]}")/../linux/common.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../../linux/common.sh"
 DC01_IP="${DC01_IP:-10.0.1.50}"
 
 # "name ip port" lines: what the DMZ should and shouldn't reach.
