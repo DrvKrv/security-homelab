@@ -1,0 +1,21 @@
+# terraform.tfvars.example - copy this to terraform.tfvars and fill in YOUR values.
+#
+#   cp terraform.tfvars.example terraform.tfvars
+#
+# terraform.tfvars is git-ignored (see .gitignore), so your real subscription ID,
+# home IP and SSH key never get committed to this public repo. Only this example,
+# with placeholders, is tracked.
+
+# Your Azure subscription ID (portal > Subscriptions, or `az account show --query id -o tsv`).
+subscription_id = "00000000-0000-0000-0000-000000000000"
+
+# Your home public IP, so only you can RDP to win-srv. From https://ifconfig.me .
+# Use the single-host form with /32. NEVER 0.0.0.0/0.
+admin_source_ip = "203.0.113.10/32"
+
+# Your SSH PUBLIC key (the contents of ~/.ssh/id_ed25519.pub). Never the private key.
+admin_ssh_public_key = "ssh-ed25519 AAAA...your-public-key... you@example"
+
+# Stages off by default. Turn one on, then `terraform apply`, to build its VM.
+enable_web_srv = false
+enable_dc01    = false
