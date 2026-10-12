@@ -4,7 +4,7 @@
 Once an attacker has a foothold, a common early move is to create a **new user
 account** and give it **administrator (sudo) rights**. It's a form of
 **persistence**: even if the original way in is closed, the attacker still has a
-valid login. A name like `svc_backup` is chosen to blend in with legitimate
+valid login. A name that looks like a backup or service account is chosen to blend in with legitimate
 service accounts.
 
 On Linux, three things get logged when this happens: the user creation, the

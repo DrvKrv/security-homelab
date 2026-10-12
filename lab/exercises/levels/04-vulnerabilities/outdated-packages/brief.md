@@ -34,7 +34,10 @@ outrank a critical one on something nothing can reach.
 5. **Verify** the fix, and run `./run.sh verify 4/outdated-packages`.
 
 ## The analyst workflow
-1. Capture a version baseline (the staging script does this and saves it).
+1. Capture a version baseline. `./run.sh stage 4/outdated-packages` does this
+   and saves it as `~/lab-evidence/packages-before-*.txt`. After patching, run
+   `bash linux/capture-package-versions.sh after` from the `lab/` folder so you
+   have a before/after pair.
 2. Refresh package data (`sudo apt update`) and see what's upgradable.
 3. Pick a couple of real CVEs tied to what's installed; record CVE id, CVSS, and
    your reasoning in `../../../docs/cve-research-worksheet.md`.

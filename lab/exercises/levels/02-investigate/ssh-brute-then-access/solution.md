@@ -5,24 +5,22 @@
 
 The staging tries invalid usernames and a real account (`labuser`) with wrong
 credentials. It never sends a correct credential, so there is no
-`authentication_success` event from the attacker's IP. On top of that, linux-srv
-is **key-only** (password login disabled), so the password attempts can't even
-be processed. The correct finding is a *failed* attempt, not a breach.
+`authentication_success` event from the attacker's IP. The correct finding is a
+*failed* attempt, not a breach.
 
 ## The timeline you should have built
 | Time | Source | Event | Evidence |
 |---|---|---|---|
 | T+0 | 10.0.1.10 | First invalid-user attempt | rule 5710 |
 | ~T+6–8 | 10.0.1.10 | Brute-force (non-existent users) alert | rule 5712 |
-| ~T+mid | 10.0.1.10 | `labuser` attempts refused before a password check | connection closed/refused (key-only host) |
-| — | 10.0.1.10 | **No** "Failed password" (5760/5763) | password method disabled → those rules can't fire |
+| ~T+mid | 10.0.1.10 | Wrong passwords vs `labuser` (only if password login is on) | rule 5760, then 5763 |
 | — | 10.0.1.10 | **No** successful login | *absence* of `authentication_success` |
 
 - **Source:** 10.0.1.10 (wazuh VM). **Target:** 10.0.1.30 (linux-srv), port 22.
 - **Accounts:** invalid names, plus `labuser`.
-- **Note:** the absence of 5760/5763 isn't a gap in your investigation — it's a
-  consequence of the host being key-only. Call that out explicitly; it shows you
-  understand *why* the logs look the way they do.
+- **If there are no password failures at all:** linux-srv is key-only, so the
+  password round never ran. That isn't a gap in your investigation. Say so
+  explicitly; it shows you understand *why* the logs look the way they do.
 
 ## If it HAD succeeded — what you'd check next (scoping)
 This is the part that shows investigative depth:

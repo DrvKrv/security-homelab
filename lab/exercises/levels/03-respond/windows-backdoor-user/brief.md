@@ -31,8 +31,8 @@ and verify:
    group, deleted) — note those events in Wazuh as proof.
 4. Capture before/after in your case file.
 
-> The lab's `Reset-Lab.ps1` performs the cleanup correctly. Do it by hand first
-> to learn the commands; use the reset to recover or to reset between attempts.
+> `./run.sh reset 3/windows-backdoor-user` prints a correct cleanup command. Do
+> it by hand first to learn the commands; use the reset to recover or start over.
 
 ## Predict before you run
 Why might a security team *disable* a suspicious admin account for a while before
