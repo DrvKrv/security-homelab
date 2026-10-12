@@ -14,6 +14,9 @@
 #            key-only until you run setup-linux-srv.sh (it adds a drop-in that turns
 #            PasswordAuthentication on). If password logins are off, Round 2 is
 #            skipped with a message, because no "Failed password" lines can appear.
+#            (For reference: on a key-only server, connection attempts by a real
+#            user show up only as 5762 "sshd: connection reset", level 4, with no
+#            brute-force correlation. Seen on the live lab, 2026-10-12.)
 #
 # Usage:
 #   bash simulate-ssh-bruteforce.sh                # target = LINUX_IP from lab.env
