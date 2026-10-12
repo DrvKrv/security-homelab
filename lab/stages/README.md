@@ -19,8 +19,8 @@ See the full write-up: [docs/plan/expansion-stages.md](../../docs/plan/expansion
 | 2 | `2-web-srv/` | `web-srv` (Linux, 10.0.1.40) | Company website, employee portal, a training target app, web logs in Wazuh |
 | 3 | `3-dc01/` | `dc01` (Windows, 10.0.1.50) | Active Directory: a domain, staff accounts, groups |
 | 4 | `4-zones/` (+ `infra/zones.tf`) | none | Network zones: a DMZ for web-srv, and a checker that proves the split |
-| 5 | *(not built)* | none | Busy-office noise |
-| 6 | `6-capstone/` | none | The capstone investigation kit: scoping, evidence, final report |
+| 5 | `5-office/` | none | Busy-office noise: fake staff log in and browse, so real attacks hide in normal activity |
+| 6 | `6-capstone/` | none | The capstone: a scripted multi-step breach conductor, plus the investigation kit (scoping, evidence, final report) |
 
 Do the stages **after** Phase 1 (finish the incidents and the case study first),
 and don't let them delay applying to internships.
@@ -54,10 +54,11 @@ and don't let them delay applying to internships.
 
 ### Still to come (placeholders for now)
 
-`2-web-srv/scenarios/` and `2-web-srv/noise/` are **documented placeholders**.
-Attack-simulation and traffic-generation scripts are not written; for now the
-target app's own built-in challenges give you plenty to detect and investigate,
-and you can create normal portal activity by hand. The capstone kit
-(`6-capstone/`) covers the investigation and report, not an automated breach.
-The staged practice-exercise runner lives in `lab/exercises/` (a separate piece of
-work) — these stages feed it realistic infrastructure to run against later.
+`2-web-srv/scenarios/` is a **documented placeholder**: scripted web-srv attack
+scenarios are not written, because the target app's own built-in challenges
+already give you plenty to detect and investigate. The busy-office noise
+generator that used to be a placeholder under `2-web-srv/noise/` is now built as
+stage 5 (`5-office/`), and the capstone (`6-capstone/`) now includes an automated
+multi-step breach as well as the investigation kit. The staged practice-exercise
+runner lives in `lab/exercises/` (a separate piece of work) — these stages feed
+it realistic infrastructure to run against later.

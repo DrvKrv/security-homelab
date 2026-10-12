@@ -1,0 +1,17 @@
+[Unit]
+Description=Fire the Acme busy-office generator on a jittered schedule
+Documentation=https://github.com/DrvKrv/security-homelab/tree/main/lab/stages/5-office
+
+[Timer]
+# Every 10 minutes, whenever the VM is on. The generator itself decides whether
+# anyone is "at work" right now based on the time of day and each persona, so
+# nights and weekends are quiet without the timer needing to know the hours.
+OnBootSec=3min
+OnUnitActiveSec=10min
+# Spread the fire time so events never land on a tidy :00/:10 boundary.
+RandomizedDelaySec=180
+AccuracySec=30s
+Persistent=false
+
+[Install]
+WantedBy=timers.target
