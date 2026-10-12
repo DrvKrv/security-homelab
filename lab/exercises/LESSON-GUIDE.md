@@ -52,6 +52,7 @@ EX_WAZUH_SEARCH="agent.name: linux-srv"            # neutral: an agent filter, n
 EX_HAS_VERIFY="no"     # "yes" only if verify.sh exists
 EX_STAGE_CONFIRM="no"  # "yes" if the staging script asks for a typed YES
 EX_ATTACK="T1110.001"  # MITRE ATT&CK technique id(s); shown only by reveal
+EX_CHECK_ALLOW=""      # optional: ids the brief names on purpose (see "Check it")
 ```
 
 **Environments** (`EX_ENV`) say what has to exist before the lesson can be staged.
@@ -170,6 +171,23 @@ Technique id and name, one line on why it fits.
 ```
 
 For a fix lesson (L3, L4), include the exact commands and how to prove the fix.
+
+## Check it
+
+Before committing, run the checker from `lab/exercises/`:
+
+```bash
+bash lib/check-lessons.sh
+```
+
+It needs no VM. It checks each lesson's files, its `meta.sh` values, that the
+staging scripts it names exist, the brief's heading, one-line hints, links, and
+the no-spoiler rule: no rule id, event id, ATT&CK id or staged account name
+before `## Hints`. If a brief teaches an id on purpose (F1 explains what event
+4688 is), list it in `EX_CHECK_ALLOW="4688"` so the check skips just that id.
+
+The checker can't judge whether a brief gives the answer away in plain words.
+Re-read the concept, mission, workflow and predict sections as the learner would.
 
 ## Facts you can rely on
 
