@@ -1,0 +1,11 @@
+# shellcheck shell=bash
+EX_TITLE="Firewall-blocked connections"
+EX_SUMMARY="Something tried services linux-srv doesn't offer. Find the firewall blocks."
+EX_ENV="core"
+EX_ROUND="1"
+EX_WHERE="wazuh"
+EX_STAGE="bash linux/simulate-blocked-connections.sh"
+EX_RESET=""
+EX_WAZUH_SEARCH="agent.name: linux-srv"
+EX_HAS_VERIFY="no"
+EX_ATTACK="T1046 Network Service Discovery"

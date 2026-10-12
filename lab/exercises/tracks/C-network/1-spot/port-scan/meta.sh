@@ -1,0 +1,12 @@
+# shellcheck shell=bash
+EX_TITLE="A port scan against linux-srv"
+EX_SUMMARY="Many ports probed fast. Find the alert that says it was a scan."
+EX_ENV="core"
+EX_ROUND="1"
+EX_WHERE="wazuh"
+EX_STAGE="bash linux/run-authorized-nmap-scan.sh"
+EX_RESET=""
+EX_WAZUH_SEARCH="agent.name: linux-srv"
+EX_HAS_VERIFY="no"
+EX_ATTACK="T1046 Network Service Discovery"
+EX_STAGE_CONFIRM="yes"

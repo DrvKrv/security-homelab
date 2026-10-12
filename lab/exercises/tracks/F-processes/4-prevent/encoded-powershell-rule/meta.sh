@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="A rule for hidden (encoded) PowerShell, tested with Atomic Red Team"
+EX_SUMMARY="Write a Wazuh rule that catches encoded-command PowerShell, then test it."
+EX_ENV="detect"
+EX_ROUND="2"
+EX_WHERE="win-srv"
+EX_FIX_WHERE="wazuh"
+EX_STAGE="# Nothing to stage for you. You test your rule by running a published Atomic Red Team test for T1059.001 on win-srv yourself (see the brief), then running its cleanup."
+EX_RESET="# Run the atomic's cleanup after testing: Invoke-AtomicTest T1059.001 -Cleanup (for the test you ran)."
+EX_WAZUH_SEARCH="agent.name: win-srv"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1059.001, T1027.010"
