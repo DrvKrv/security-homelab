@@ -12,13 +12,21 @@ alert.
 Being able to recognise this pattern is the most basic SOC-analyst skill. In
 this exercise nothing is compromised — you're learning to *see* the attempt.
 
+**One important detail about your lab:** linux-srv accepts **SSH keys only** —
+password login is disabled (a real hardening win, and the Azure default). So a
+password-guessing attack can't even reach a password prompt; the server refuses
+the password method outright. That changes what you'll see in the logs, and
+noticing *why* is part of the exercise.
+
 ## Your mission
 Someone on the network is hammering SSH on **linux-srv**. Using only the Wazuh
 dashboard, work out:
-1. That a brute-force attempt is happening (which alert fires, and at what level).
+1. That an SSH attack is happening (which alert fires, and at what level).
 2. **Which machine** the attempts are coming from.
 3. **Which account(s)** are being targeted.
 4. Whether any attempt actually **succeeded**.
+5. **Why** the attack produces the alerts it does (and *not* others) given that
+   the server is key-only.
 
 ## The analyst workflow (how to approach it, not the answer)
 1. Open the dashboard and go to **Threat Hunting > Events**. Set the time range
@@ -44,7 +52,7 @@ conclusion about whether it succeeded. One or two screenshots of the alerts make
 it portfolio-ready.
 
 ## Hints
-1. The attack runs in two rounds. Round one uses usernames that don't exist on the box; round two uses a real account with wrong passwords. They trip *different* rules — look for two distinct alert types, not one.
+1. The attack tries two things: usernames that don't exist on the box, and a real account (`labuser`) with wrong credentials. The **invalid-user** attempts are your most reliable signal here — look for them first.
 2. In an event, `data.srcip` is the attacker and `data.srcuser` (or the message text) is the account being tried. The source IP will be one of your own lab VMs.
-3. A "non-existent user" burst and a "valid user, wrong password" burst are both brute force but are logged differently. Find the rule for each.
+3. Because the server is key-only, the "real account, wrong password" attempts never reach a password check — sshd refuses the password method before that. So don't expect "Failed password" alerts; expect "invalid user" and repeated rejected/closed connections from one source. Working out that gap is the point.
 4. To answer "did it succeed?", search the same window for a *successful* SSH login (rule group `authentication_success`) from that same source IP. Its absence is itself a finding — say so explicitly.
