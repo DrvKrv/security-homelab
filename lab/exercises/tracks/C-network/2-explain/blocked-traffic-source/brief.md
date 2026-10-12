@@ -39,7 +39,9 @@ what the target machine says about its connections.
 3. Pivot: in Wazuh, switch to that VM's own events for the same window. Look for
    logins and admin commands.
 4. Back on linux-srv, check which ports its firewall allows. Then look for any
-   events from the same source on those services, not just blocks.
+   activity from the same source on those services, not just blocks: in Wazuh,
+   and in linux-srv's own logs, because not everything a service logs becomes
+   an alert.
 5. Widen the window a little on both sides, so you don't miss something that
    happened just before or just after.
 6. Write the timeline, then the verdict.
@@ -58,4 +60,4 @@ login verdict with evidence, and your overall verdict.
 1. Search linux-srv for `rule.id: (100100 or 100101)`; `data.srcip` is the source and `data.dstport` the port.
 2. The asset inventory maps the address to a VM. In Wazuh, change the agent filter to that VM (the manager's own agent is named after it).
 3. On that VM, look for `rule.groups: authentication_success` in the window: who was logged in, and from which address?
-4. linux-srv allows SSH from the lab. Search linux-srv for `rule.groups: sshd` with that source address in the same window, then look for an authentication success.
+4. A connection that never logs in may not be an alert at all. On linux-srv: `sudo journalctl -u ssh --since "-2 hours" | grep <source>`.

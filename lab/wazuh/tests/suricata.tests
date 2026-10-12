@@ -1,0 +1,10 @@
+# Suricata alerts from linux-srv's eve.json (unit 4, lab/linux/setup-suricata.sh).
+# Wazuh reads eve.json as JSON and its built-in Suricata rules raise each alert.
+# The sample is a real eve.json alert line, with the addresses changed to the lab's.
+
+[a Suricata alert becomes a Wazuh alert]
+log: {"timestamp":"2026-10-12T06:56:36.010935+0000","flow_id":1172866591980519,"in_iface":"eth0","event_type":"alert","src_ip":"10.0.1.10","src_port":35592,"dest_ip":"10.0.1.30","dest_port":3306,"proto":"TCP","pkt_src":"wire/pcap","community_id":"1:mYvKTiLLl60rcYhDLkhCvcGil8M=","alert":{"action":"allowed","gid":1,"signature_id":9000001,"rev":3,"signature":"LAB TEST connection to MySQL port","category":"","severity":3},"direction":"to_server"}
+rule: 86601
+level: 3
+field: src_ip=10.0.1.10
+field: dest_port=3306

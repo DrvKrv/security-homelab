@@ -1,0 +1,32 @@
+# zones-internal.tf - YOU WRITE THIS (exercise 06). Rename to zones-internal.tf
+# when you're ready for Terraform to read it.
+#
+# Goal: a firewall on the INTERNAL subnet (lab-subnet, 10.0.1.0/24) that refuses
+# connections started from the DMZ, except the one thing the DMZ genuinely needs.
+# This is defence in depth: the DMZ's own firewall already says no, but if
+# someone loosens it by mistake, this one still holds.
+#
+# Use zones.tf as your model. You need four blocks:
+#
+# 1. An NSG, created only when zones are on.
+#      resource "azurerm_network_security_group" "internal" { count = ... }
+#
+# 2. Inside it, an Allow rule for the Wazuh agent: from the DMZ subnet, to the
+#    wazuh VM's IP, TCP ports 1514-1515. Pick a low priority number (checked first).
+#      Hint: zones.tf has the same ports in its outbound rule.
+#
+# 3. Inside it, a Deny rule: from the DMZ subnet, to anything, any protocol.
+#    Its priority number must be HIGHER than the allow (checked after it), and
+#    lower than 65000 (so it beats Azure's built-in allow-everything-in-the-VNet).
+#
+# 4. An association that attaches the NSG to azurerm_subnet.lab.
+#      resource "azurerm_subnet_network_security_group_association" "internal" { ... }
+#
+# Careful: this NSG sits in front of EVERY internal VM, including win-srv, your
+# only way in. Don't write a rule that matches traffic from the internet or from
+# your home IP. Only the DMZ subnet should appear as a source in a Deny.
+#
+# Check yourself:
+#   terraform validate
+#   terraform plan        (with enable_zones = true: read every rule it shows)
+# Then compare with answers/zones-internal.tf.

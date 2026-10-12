@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Make a scan show up as a network alert with Suricata"
+EX_SUMMARY="Suricata watches linux-srv's traffic. Find out whether it notices a scan from inside the lab, and make sure it does."
+EX_ENV="detect"
+EX_ROUND="2"
+EX_WHERE="wazuh"
+EX_FIX_WHERE="linux-srv"
+EX_STAGE="bash linux/run-authorized-nmap-scan.sh"
+EX_RESET=""
+EX_WAZUH_SEARCH="agent.name: linux-srv"
+EX_HAS_VERIFY="yes"
+EX_STAGE_CONFIRM="yes"
+EX_ATTACK="T1046"

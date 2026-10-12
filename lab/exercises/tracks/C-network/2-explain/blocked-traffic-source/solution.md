@@ -20,12 +20,15 @@ run is under *This run's details* at the end of `reveal`.
   was behind the traffic.
 - **Allowed traffic:** linux-srv's UFW allows only SSH (port 22) from the lab
   subnet (`sudo ufw status`). The firewall log can't show allowed connections.
-  - If the SSH connection happened this run, linux-srv's sshd recorded it: a
-    low-level sshd event from 10.0.1.10 (on this lab's key-only linux-srv a real
-    user rejected this way shows up as 5762, "connection reset", level 4). Note
-    the rule id you see. There's **no** authentication success (5715) from
-    10.0.1.10.
-  - If it didn't, there are no sshd events from 10.0.1.10 in the window at all.
+  - If the SSH connection happened this run, linux-srv's own SSH log has it:
+    `sudo journalctl -u ssh` shows `Connection closed by authenticating user
+    labuser 10.0.1.10 port ... [preauth]`. Wazuh decodes that line as rule
+    5722 ("sshd: ssh connection closed") at **level 0**, which means "seen, but
+    not worth an alert", so it **isn't in the dashboard at all**. (A connection
+    that's *reset* rather than closed gets 5762 at level 4, which is the alert
+    seen on the live lab when a key-only server turned a real user away.)
+    Either way there's **no** authentication success (5715) from 10.0.1.10.
+  - If it didn't happen, the SSH log has nothing from 10.0.1.10 in the window.
 
 ## Answers to the mission
 1. 10.0.1.10, the wazuh VM.
@@ -48,7 +51,9 @@ T1046 Network Service Discovery: trying several services to see which answer.
 - Stopping at the IP address instead of pivoting to the machine behind it.
 - Searching the source only during the blocks, and missing a connection just
   before or after.
-- Calling the low-level sshd event a login. It's a connection, not a session.
+- Calling the sshd "connection closed" line a login. It's a connection, not a session.
+- Searching only Wazuh alerts. Level-0 events never become alerts, so the host's
+  own log can hold evidence the dashboard doesn't show.
 
 ## Interview talking point
 "I traced firewall blocks on one server to another internal machine, then pivoted
