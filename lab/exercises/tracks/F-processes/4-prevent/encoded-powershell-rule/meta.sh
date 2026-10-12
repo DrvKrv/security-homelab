@@ -11,3 +11,5 @@ EX_WAZUH_SEARCH="agent.name: win-srv"
 EX_HAS_VERIFY="no"
 EX_STAGE_CONFIRM="no"
 EX_ATTACK="T1059.001, T1027.010"
+# The mission names the Atomic Red Team technique to test with, on purpose.
+EX_CHECK_ALLOW="T1059.001"
