@@ -1,0 +1,51 @@
+# --- Secrets and credentials (never commit) ---
+*.env
+.env*
+*.pem
+*.key
+*.p12
+*.pfx
+*.kdbx
+*passwords.txt
+secrets.*
+credentials.*
+wazuh-install-files.tar
+wazuh-passwords.txt
+client.keys
+
+# --- VM images, snapshots and disks (huge, and can hold secrets) ---
+*.vmwarevm/
+*.vmdk
+*.vmem
+*.vmsn
+*.vmss
+*.nvram
+*.iso
+*.qcow2
+*.utm/
+*.ova
+*.ovf
+
+# --- Raw logs and captures (export a redacted excerpt instead) ---
+*.pcap
+*.pcapng
+*.evtx
+raw-logs/
+exports/
+
+# --- Local scratch ---
+private/
+scratch/
+*.local.md
+
+# --- OS / editor noise ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# --- Cloud credentials ---
+.azure/
+*.publishsettings
+terraform.tfstate*
