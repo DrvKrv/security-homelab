@@ -120,8 +120,14 @@ across before up; concepts spiral back in each new environment.
 - 📦 Unit 4: Sysmon, Suricata, rule tests and lessons built (runbook 06). Sysmon
   untested on real Windows; Suricata and rule tests tested in containers.
 - 📦 Unit 8: `infra/zones.tf` + exercise 06 + `lab/stages/4-zones/` checker.
-- 📝 Unit 9: busy-office generator not built (placeholder).
-- 📦 Unit 10: investigation kit only (`lab/stages/6-capstone/`); no automated breach.
+- 📦 Unit 9: busy-office noise generator built (`lab/stages/5-office/`): personas
+  drive portal/site activity via a systemd timer, with benign red herrings. Tested
+  in the sandbox against a portal stub; not yet run on the live web-srv.
+- 📦 Unit 10: capstone breach built. `lab/stages/6-capstone/` now has a conductor
+  (`run-breach.sh` + `breach-plan.py`, with `Invoke-BreachStep.ps1` for win-srv)
+  that chains the existing `lab/linux` and `lab/windows` sims into one seeded,
+  multi-step, multi-VM breach, plus the investigation kit. Plan/fire/reveal logic
+  tested in the sandbox with stub scripts; the real sims are untested on live VMs.
 
 When work lands, update the status markers here and in
 `docs/plan/curriculum-roadmap.md`. Check open PRs before starting, since work

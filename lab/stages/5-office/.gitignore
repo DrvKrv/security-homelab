@@ -1,0 +1,7 @@
+# Everything the generator creates on the VM stays local, never committed.
+config.json
+spoilers/
+
+# Python bytecode from local testing
+__pycache__/
+*.pyc

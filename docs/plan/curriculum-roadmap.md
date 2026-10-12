@@ -28,8 +28,8 @@ after them should delay finishing it.
 | 6 | Company website (web-srv) | 📦 | Linux | Web security, vulnerability management |
 | 7 | Company accounts (dc01, Active Directory) | 📦 | Windows | Identity and access |
 | 8 | Network zones | 📦 | none | Segmentation, firewalls, network monitoring |
-| 9 | Busy office | 📝 | none | Threat hunting in normal noise |
-| 10 | Capstone breach | 📦 investigation kit | none | Full incident response, final report |
+| 9 | Busy office | 📦 built | none | Threat hunting in normal noise |
+| 10 | Capstone breach | 📦 breach + kit | none | Full incident response, final report |
 
 Running alongside every unit: **GRC** (risk, policy, audits) and **Security+** study.
 Optional later: **DevSecOps pipeline** and **container security**.
@@ -134,19 +134,27 @@ Split the network into a DMZ (web-srv) and an internal zone (dc01, wazuh) with f
 rules between them. Prove a compromised web server can't reach the domain controller.
 You learn: segmentation, firewall design, and why Azure limits network monitoring.
 
-## Unit 9. Busy office 📝 (placeholder in `lab/stages/`; generator not built)
+## Unit 9. Busy office 📦 built (`lab/stages/5-office/`)
 
 A generator that makes the fake staff act like people: logins, browsing, typos, odd hours,
-harmless-but-suspicious red herrings. Randomized and silent.
+harmless-but-suspicious red herrings. Randomized and silent. Built: `office.py` drives
+each employee from their persona, `office.sh` installs a systemd timer that runs it
+during work hours, red herrings go to a git-ignored spoilers folder, and `hint`/`reveal`
+are the answer key. Tested in the sandbox against a portal stub; not yet run on live web-srv.
 You learn: baselining "normal", threat hunting, tuning out false positives.
 
-## Unit 10. Capstone breach 📦 investigation kit (`lab/stages/6-capstone/`)
+## Unit 10. Capstone breach 📦 breach + kit (`lab/stages/6-capstone/`)
 
 One larger incident across the company, worked from first alert to final report: the
-centerpiece of the case study. Built: scoping questions, an evidence checklist and log,
-and a final-report template (`docs/incidents/TEMPLATE-final-report.md`). Not built: an
-automated multi-step breach; the kit's README lists ways to set up an incident from the
-existing lessons instead.
+centerpiece of the case study. Built: the investigation kit (scoping questions, an
+evidence checklist and log, and a final-report template
+`docs/incidents/TEMPLATE-final-report.md`), **and** an automated multi-step breach. The
+conductor (`run-breach.sh` + `breach-plan.py`, with `Invoke-BreachStep.ps1` for win-srv)
+turns a seed into one deterministic, ordered breach across the VMs (recon, password
+guessing, a valid account, persistence, lateral probing), reusing only the existing
+`lab/linux`/`lab/windows` sims and OWASP Juice Shop. It is quiet by design, with a sealed
+answer key. Run it inside the unit 9 noise for the full effect. Logic tested in the
+sandbox with stub scripts; the real sims are untested on live VMs.
 
 ---
 
