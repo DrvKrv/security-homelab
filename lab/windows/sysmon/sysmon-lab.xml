@@ -1,0 +1,77 @@
+<!--
+  Sysmon configuration for the lab's win-srv. Installed by
+  lab/windows/Install-Sysmon.ps1. Deliberately small, so you can read all of it.
+
+  Sysmon writes to Applications and Services Logs > Microsoft > Windows >
+  Sysmon > Operational, and the Wazuh agent forwards that log (the "windows"
+  agent group config collects it).
+
+  How filtering works: for each event type, onmatch="include" logs ONLY what
+  matches the rules inside; onmatch="exclude" logs EVERYTHING except what
+  matches. An empty exclude means "log all of it".
+
+  Event types used here:
+    1  process created      everything (the most useful single event)
+    3  network connection   only from programs attackers like to abuse
+   11  file created         only in places that start programs automatically
+   13  registry value set   only in keys that start programs automatically
+   22  DNS query            everything except very chatty Microsoft lookups
+  Others (driver loads, image loads, process access...) are off to keep the
+  volume, and the Wazuh disk use, sensible on a small VM.
+
+  Tuning this file is part of unit 4: if one program floods the log, exclude it
+  here, write down why, and re-run Install-Sysmon.ps1 to apply the change.
+-->
+<Sysmon schemaversion="4.90">
+  <HashAlgorithms>SHA256</HashAlgorithms>
+  <CheckRevocation/>
+  <EventFiltering>
+
+    <!-- 1: every process start, with its command line, parent and hash. -->
+    <RuleGroup name="" groupRelation="or">
+      <ProcessCreate onmatch="exclude"/>
+    </RuleGroup>
+
+    <!-- 3: outbound connections from built-in tools that rarely need the network. -->
+    <RuleGroup name="" groupRelation="or">
+      <NetworkConnect onmatch="include">
+        <Image condition="end with">\powershell.exe</Image>
+        <Image condition="end with">\pwsh.exe</Image>
+        <Image condition="end with">\cmd.exe</Image>
+        <Image condition="end with">\rundll32.exe</Image>
+        <Image condition="end with">\regsvr32.exe</Image>
+        <Image condition="end with">\mshta.exe</Image>
+        <Image condition="end with">\certutil.exe</Image>
+        <Image condition="end with">\bitsadmin.exe</Image>
+        <Image condition="end with">\wscript.exe</Image>
+        <Image condition="end with">\cscript.exe</Image>
+      </NetworkConnect>
+    </RuleGroup>
+
+    <!-- 11: files dropped where Windows starts them automatically. -->
+    <RuleGroup name="" groupRelation="or">
+      <FileCreate onmatch="include">
+        <TargetFilename condition="contains">\Start Menu\Programs\Startup\</TargetFilename>
+        <TargetFilename condition="begin with">C:\Windows\System32\Tasks\</TargetFilename>
+      </FileCreate>
+    </RuleGroup>
+
+    <!-- 13: registry values that make a program start at logon or boot. -->
+    <RuleGroup name="" groupRelation="or">
+      <RegistryEvent onmatch="include">
+        <TargetObject condition="contains">\CurrentVersion\Run</TargetObject>
+        <TargetObject condition="contains">\CurrentControlSet\Services\</TargetObject>
+      </RegistryEvent>
+    </RuleGroup>
+
+    <!-- 22: DNS lookups, minus the busiest Microsoft update and telemetry names. -->
+    <RuleGroup name="" groupRelation="or">
+      <DnsQuery onmatch="exclude">
+        <QueryName condition="end with">.windowsupdate.com</QueryName>
+        <QueryName condition="end with">.update.microsoft.com</QueryName>
+        <QueryName condition="end with">.events.data.microsoft.com</QueryName>
+      </DnsQuery>
+    </RuleGroup>
+
+  </EventFiltering>
+</Sysmon>
