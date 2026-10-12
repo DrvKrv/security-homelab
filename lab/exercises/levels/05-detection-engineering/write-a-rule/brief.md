@@ -53,4 +53,4 @@ SSH-success line. Paste that logtest output into your case file — it's the pro
 - A rule that fires when a successful login follows a brute-force from the same
   IP (chain off the brute-force rule).
 - A rule that raises FIM alerts on `/etc/shadow` specifically to a higher level.
-- A rule for a service account (like `svc_backup`) using sudo.
+- A rule for a service account using sudo.
