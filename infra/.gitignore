@@ -1,0 +1,13 @@
+# Terraform state can contain sensitive values (passwords, keys). NEVER commit it.
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Your real values (subscription ID, home IP, SSH key). Only the .example is tracked.
+terraform.tfvars
+*.auto.tfvars
+
+# Crash logs and plan files
+crash.log
+*.tfplan
