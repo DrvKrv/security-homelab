@@ -16,6 +16,11 @@
 #   EX_RESET        optional command that undoes the staging / returns to clean.
 #   EX_WAZUH_SEARCH a starting Wazuh "Threat Hunting > Events" search string.
 #   EX_HAS_VERIFY   "yes" if a verify.sh exists (a fix the learner must prove).
+#   EX_STAGE_CONFIRM "yes" if the staging script asks for a typed YES (the scan).
+#                   `stage` asks the learner once, then passes the YES along.
+#
+# `./run.sh stage` runs EX_STAGE with its output sent to a log file, so the
+# learner sees "Done" instead of a play-by-play that gives the answers away.
 
 set -euo pipefail
 
@@ -54,9 +59,23 @@ ex_id() {
 load_meta() {
   local d="$1"
   EX_TITLE=""; EX_SUMMARY=""; EX_STAGE_WHERE=""; EX_STAGE=""; EX_RESET=""
-  EX_WAZUH_SEARCH=""; EX_HAS_VERIFY="no"
+  EX_WAZUH_SEARCH=""; EX_HAS_VERIFY="no"; EX_STAGE_CONFIRM="no"
   # shellcheck source=/dev/null
   source "$d/meta.sh"
+}
+
+# The VM this shell is running on. Azure names the OS host after the VM
+# (wazuh, linux-srv, win-srv). LAB_EXERCISE_HOST overrides it for testing.
+this_host() { echo "${LAB_EXERCISE_HOST:-$(hostname -s 2>/dev/null || hostname)}"; }
+
+# Log file for one run of an exercise's staging or reset.
+run_log() { echo "$STATE_DIR/$1-$(echo "$2" | tr / -)-$(date +%Y%m%d-%H%M%S).log"; }
+
+# A PowerShell line for win-srv that sends all of the script's output to a log
+# file instead of the screen, so staging doesn't show the answers.
+win_quiet_cmd() {
+  local cmd="$1" name="$2"
+  printf '%s *> "$env:TEMP\\%s.log"; "Done. Details saved to $env:TEMP\\%s.log"' "$cmd" "$name" "$name"
 }
 
 cmd_list() {
@@ -76,6 +95,7 @@ cmd_list() {
   cat <<EOF
 Start one:        ./run.sh start <level>/<variant>
 Random at a level:./run.sh start <level>            (picks a variant you haven't done recently)
+Stage it quietly: ./run.sh stage <level>/<variant>  (run on the VM the brief names)
 Get a hint:       ./run.sh hint <level>/<variant>
 Reveal answer:    ./run.sh reveal <level>/<variant>
 Check your fix:   ./run.sh verify <level>/<variant>
@@ -140,16 +160,73 @@ cmd_start() {
   rule
   cat "$RESOLVED_DIR/brief.md"
   echo; rule
-  check_stage_script "${EX_STAGE%% *}"
-  c_yellow "To stage this incident, run ON the $EX_STAGE_WHERE VM:"
-  echo "    $EX_STAGE"
-  [[ -n "$EX_WAZUH_SEARCH" ]] && { echo; echo "Wazuh starting point (Threat Hunting > Events search):"; echo "    $EX_WAZUH_SEARCH"; }
+  if [[ -z "$EX_STAGE" || "$EX_STAGE" == \#* ]]; then
+    c_yellow "Step 1: nothing to stage for this one."
+    echo "    ${EX_STAGE#\# }"
+  else
+    c_yellow "Step 1: stage the incident. It runs quietly, so the details stay hidden."
+    if [[ "$EX_STAGE_WHERE" == "win-srv" ]]; then
+      echo "    It runs on win-srv. ./run.sh stage $id prints the PowerShell line to use there."
+    else
+      echo "    On the $EX_STAGE_WHERE VM:  ./run.sh stage $id"
+    fi
+  fi
+  echo
+  c_yellow "Step 2: investigate in Wazuh (Threat Hunting > Events)."
+  [[ -n "$EX_WAZUH_SEARCH" ]] && echo "    Start broad with:  $EX_WAZUH_SEARCH"
   echo
   echo "When you're ready, start your case file from: $EXROOT/case-file-template.md"
   echo "Stuck?  ./run.sh hint $id        See the answer?  ./run.sh reveal $id"
   [[ "$EX_HAS_VERIFY" == "yes" ]] && echo "Prove your fix: ./run.sh verify $id"
   # track start time for the case file
   date +%s > "$STATE_DIR/started-$(echo "$id" | tr / -)"
+}
+
+cmd_stage() {
+  resolve_target "$1" || return 1
+  load_meta "$RESOLVED_DIR"
+  local id; id="$(ex_id "$RESOLVED_DIR")"
+  if [[ -z "$EX_STAGE" || "$EX_STAGE" == \#* ]]; then
+    c_yellow "Nothing to stage for this exercise. ${EX_STAGE#\# }"
+    return 0
+  fi
+  if [[ "$EX_STAGE_WHERE" == "win-srv" ]]; then
+    c_yellow "This one stages on win-srv. Open PowerShell as Administrator, go to the"
+    c_yellow "repo's lab\\ folder, and run this line. It prints only 'Done':"
+    echo
+    echo "    $(win_quiet_cmd "$EX_STAGE" "lab-stage-$(echo "$id" | tr / -)")"
+    return 0
+  fi
+  local here; here="$(this_host)"
+  if [[ "${here,,}" != "$EX_STAGE_WHERE" ]]; then
+    c_red "This exercise stages on the $EX_STAGE_WHERE VM, but this is '$here'."
+    c_red "Connect to $EX_STAGE_WHERE (it needs its own copy of the repo) and run:"
+    c_red "    ./run.sh stage $id"
+    c_red "(Already on $EX_STAGE_WHERE under another name? LAB_EXERCISE_HOST=$EX_STAGE_WHERE ./run.sh stage $id)"
+    return 1
+  fi
+  check_stage_script "${EX_STAGE%% *}"
+  if [[ "$EX_STAGE_CONFIRM" == "yes" ]]; then
+    local answer
+    read -r -p "This runs a scan against your own lab VM. Type YES to confirm you're authorized: " answer
+    [[ "$answer" == "YES" ]] || { c_red "Cancelled."; return 1; }
+  fi
+  local log rc=0; log="$(run_log staging "$id")"
+  c_cyan "Staging $id quietly. This can take a minute or two..."
+  if [[ "$EX_STAGE_CONFIRM" == "yes" ]]; then
+    (cd "$LAB_DIR" && echo YES | bash -c "$EX_STAGE") >"$log" 2>&1 || rc=$?
+  else
+    (cd "$LAB_DIR" && bash -c "$EX_STAGE") </dev/null >"$log" 2>&1 || rc=$?
+  fi
+  if [[ $rc -eq 0 ]]; then
+    c_green "Done. The incident is staged. Give Wazuh a minute, then go find it."
+    echo "(The raw staging output is in $log. It gives the answers away, so save it for after.)"
+  else
+    c_red "Staging failed (exit code $rc). The last lines of the log say why:"
+    tail -n 5 "$log" >&2
+    c_red "Full log: $log"
+    return 1
+  fi
 }
 
 cmd_hint() {
@@ -196,10 +273,23 @@ cmd_verify() {
 cmd_reset() {
   resolve_target "$1" || return 1
   load_meta "$RESOLVED_DIR"
+  local id; id="$(ex_id "$RESOLVED_DIR")"
   if [[ -z "$EX_RESET" ]]; then
     c_yellow "This exercise leaves nothing behind to reset."
     return 0
   fi
-  c_yellow "Reset runs ON the $EX_STAGE_WHERE VM:"
-  echo "    $EX_RESET"
+  if [[ "$EX_STAGE_WHERE" == "win-srv" ]]; then
+    c_yellow "Reset runs on win-srv. In an Administrator PowerShell, from the repo's lab\\ folder:"
+    echo "    $EX_RESET"
+    return 0
+  fi
+  local here; here="$(this_host)"
+  if [[ "${here,,}" != "$EX_STAGE_WHERE" ]]; then
+    c_red "Reset runs on the $EX_STAGE_WHERE VM, but this is '$here'. Run ./run.sh reset $id there."
+    return 1
+  fi
+  local answer
+  read -r -p "This undoes the staged incident on $EX_STAGE_WHERE. Continue? [y/N] " answer
+  [[ "$answer" =~ ^[Yy] ]] || { c_yellow "Left as is."; return 0; }
+  (cd "$LAB_DIR" && bash -c "$EX_RESET")
 }
