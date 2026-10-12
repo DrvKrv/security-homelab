@@ -10,6 +10,10 @@
 #   Round 2: wrong passwords for the real test account (labuser)
 #            -> Wazuh 5760 per try, 5763 "brute force ... authentication failed" after 8
 #            (also PAM 5503 / 5551)
+#            ONLY when linux-srv accepts password logins. Azure Ubuntu images are
+#            key-only until you run setup-linux-srv.sh (it adds a drop-in that turns
+#            PasswordAuthentication on). If password logins are off, Round 2 is
+#            skipped with a message, because no "Failed password" lines can appear.
 #
 # Usage:
 #   bash simulate-ssh-bruteforce.sh                # target = LINUX_IP from lab.env
@@ -45,6 +49,17 @@ for ((i = 0; i < TRIES; i++)); do
 done
 
 say "Round 2: wrong passwords for '$LAB_SSH_USER'"
+# Ask the server which login methods it offers; no password is sent here.
+methods="$(ssh "${SSH_OPTS[@]}" -o BatchMode=yes -o PreferredAuthentications=none \
+  "$LAB_SSH_USER@$TARGET" true 2>&1 | grep -o 'Permission denied ([^)]*)' || true)"
+if [[ "$methods" != *password* && "$methods" != *keyboard-interactive* ]]; then
+  warn "  Skipped: $TARGET only accepts SSH keys (${methods:-no answer}),"
+  warn "  so wrong-password attempts can't be logged. Run setup-linux-srv.sh on"
+  warn "  linux-srv to turn password logins on, then run this script again."
+  say "Finished (Round 1 only). Saved this output to $LOG"
+  echo "Next: Wazuh dashboard > Threat Hunting > Events, search:  rule.id:(5710 or 5712)"
+  exit 0
+fi
 for ((i = 1; i <= TRIES; i++)); do
   pw="$(openssl rand -hex 8)"      # random wrong password
   sshpass -p "$pw" ssh "${SSH_OPTS[@]}" -o PubkeyAuthentication=no \
