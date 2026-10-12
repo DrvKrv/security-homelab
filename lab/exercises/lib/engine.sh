@@ -59,6 +59,21 @@ load_meta() {
   source "$d/meta.sh"
 }
 
+# Commands in meta.sh are written relative to lab/. Print them so they work from
+# any directory on a Linux VM by changing into lab/ first. On win-srv the repo
+# lives elsewhere, so tell the learner to run from the repo's lab\ folder.
+show_cmd() {
+  local where="$1" cmd="$2"
+  if [[ "$cmd" == \#* ]]; then
+    echo "    $cmd"
+  elif [[ "$where" == "win-srv" ]]; then
+    echo "    (in PowerShell, from the lab\\ folder of the repo)"
+    echo "    $cmd"
+  else
+    echo "    cd \"$LAB_DIR\" && $cmd"
+  fi
+}
+
 cmd_list() {
   local cur_lvl="" d id lvl
   c_cyan "Lab exercises  (defensive-security practice, all inside your own VNet)"
@@ -142,7 +157,7 @@ cmd_start() {
   echo; rule
   check_stage_script "${EX_STAGE%% *}"
   c_yellow "To stage this incident, run ON the $EX_STAGE_WHERE VM:"
-  echo "    $EX_STAGE"
+  show_cmd "$EX_STAGE_WHERE" "$EX_STAGE"
   [[ -n "$EX_WAZUH_SEARCH" ]] && { echo; echo "Wazuh starting point (Threat Hunting > Events search):"; echo "    $EX_WAZUH_SEARCH"; }
   echo
   echo "When you're ready, start your case file from: $EXROOT/case-file-template.md"
@@ -201,5 +216,5 @@ cmd_reset() {
     return 0
   fi
   c_yellow "Reset runs ON the $EX_STAGE_WHERE VM:"
-  echo "    $EX_RESET"
+  show_cmd "$EX_STAGE_WHERE" "$EX_RESET"
 }
