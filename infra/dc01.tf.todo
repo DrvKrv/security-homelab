@@ -1,0 +1,62 @@
+# dc01.tf.todo - YOUR turn. This is the file you write.
+#
+# HOW TO USE THIS FILE
+#   1. Read web-srv.tf until you understand every line.
+#   2. Fill in the blanks below (the <<< ... >>> markers).
+#   3. Rename it to dc01.tf   (Terraform only reads files ending in .tf, so while
+#      it's .tf.todo it is ignored - that's why your half-finished work can't
+#      break anything).
+#        mv dc01.tf.todo dc01.tf
+#   4. Run `terraform fmt` then `terraform validate` to catch syntax mistakes,
+#      then `terraform plan` to see what it WOULD build. Nothing is created until
+#      you `apply`.
+#   5. Compare with answers/dc01.tf only after you've tried. (answers/ is a
+#      subfolder, so Terraform never reads it.)
+#
+# dc01 is a WINDOWS VM (it becomes the domain controller), so it's closer to
+# win-srv in core.tf than to web-srv for the VM block - but it has NO public IP,
+# like web-srv. It's gated by var.enable_dc01, with [0] indexing, same as web-srv.
+#
+# Predict first: dc01 holds every company account. Should it ever have a public
+# IP? How will you reach it to administer it? (Write your answer in a comment.)
+
+# ---- 1. The network interface (no public IP). Model it on web_srv's NIC. ----
+# resource "azurerm_network_interface" "dc01" {
+#   count               = <<< enable flag ? 1 : 0 >>>
+#   name                = "dc01-nic"
+#   location            = azurerm_resource_group.lab.location
+#   resource_group_name = azurerm_resource_group.lab.name
+#   tags                = var.tags
+#
+#   ip_configuration {
+#     name                          = "internal"
+#     subnet_id                     = <<< the lab subnet's id >>>
+#     private_ip_address_allocation = "Static"
+#     private_ip_address            = <<< the dc01 entry in local.ips >>>
+#   }
+# }
+
+# ---- 2. An empty NSG + its association (lab-only, like web_srv). ----
+# resource "azurerm_network_security_group" "dc01" {
+#   ...
+# }
+# resource "azurerm_network_interface_security_group_association" "dc01" {
+#   ...
+# }
+
+# ---- 3. A random admin password (model it on random_password.win_srv). ----
+# resource "random_password" "dc01" {
+#   ...
+# }
+
+# ---- 4. The Windows VM. Model it on azurerm_windows_virtual_machine.win_srv,
+#         but: count-gated, [0] indexing, var.vm_size_windows, NO public IP.
+#         You do NOT promote it to a domain controller here - that's the job of
+#         lab/stages/3-dc01/Install-Dc01.ps1, which you run after the VM is up.
+#         (Stretch goal: wire a startup-script extension to run it automatically.)
+# resource "azurerm_windows_virtual_machine" "dc01" {
+#   count                 = var.enable_dc01 ? 1 : 0
+#   ...
+# }
+
+# ---- 5. Add dc01's private IP to outputs.tf so you can see it after apply. ----
