@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Prove the split network works: web-srv can't reach dc01"
+EX_SUMMARY="Split the network into a DMZ and an internal zone, then prove the web server can't reach the domain controller."
+EX_ENV="zones"
+EX_ROUND="6"
+EX_WHERE="none"
+EX_FIX_WHERE="web-srv"
+EX_STAGE="# Nothing to stage: you build the zones yourself with infra/exercises/06-network-zones.md, then prove them."
+EX_RESET="# To undo the zones: enable_zones = false in terraform.tfvars, then terraform apply."
+EX_WAZUH_SEARCH=""
+EX_HAS_VERIFY="yes"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1021"

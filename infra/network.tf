@@ -37,7 +37,8 @@ locals {
     wazuh     = cidrhost(var.lab_subnet_cidr, 10) # 10.0.1.10
     win_srv   = cidrhost(var.lab_subnet_cidr, 20) # 10.0.1.20
     linux_srv = cidrhost(var.lab_subnet_cidr, 30) # 10.0.1.30
-    web_srv   = cidrhost(var.lab_subnet_cidr, 40) # 10.0.1.40
-    dc01      = cidrhost(var.lab_subnet_cidr, 50) # 10.0.1.50
+    # 10.0.1.40, or 10.0.2.40 in the DMZ once zones are on (zones.tf).
+    web_srv = var.enable_zones ? cidrhost(var.dmz_subnet_cidr, 40) : cidrhost(var.lab_subnet_cidr, 40)
+    dc01    = cidrhost(var.lab_subnet_cidr, 50) # 10.0.1.50
   }
 }
