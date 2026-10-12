@@ -44,6 +44,9 @@ KT is new to homelabs and wants to **learn**, not just follow steps.
   training apps from their official images (OWASP Juice Shop), and published
   Atomic Red Team test IDs. Build the defensive and infrastructure pieces.
   Deliberately vulnerable apps must never get a public IP (installers check).
+  One approved exception (KT, 2026-10-12): `lab/windows/Simulate-SuccessfulLogon.ps1`
+  logs on once as a throwaway lab account it created itself, for "failures, then
+  a success" lessons. Don't widen it; ask KT before adding anything like it.
 - **Incident reports are KT's.** They live in `docs/incidents/IR-YYYY-NNN-name.md`
   with screenshots in `docs/evidence/`. KT writes them on a branch and opens the
   PR; Claude reviews and comments without rewriting KT's analysis.
@@ -78,9 +81,9 @@ gives 5762 (level 4) with no correlation rule, a detection gap KT noticed.
 | `docs/` | Asset inventory, network diagram, policy, CVE worksheet, templates for incidents and tickets, publishing checklist |
 | `docs/plan/` | **The plans:** roadmap, lesson grid, setup guides, later units |
 | `lab/wazuh/`, `lab/linux/`, `lab/windows/`, `lab/runbooks/` | Wazuh rules/decoders, simulation scripts, setup runbook |
-| `lab/exercises/` | Practice range: `./run.sh list / start / stage / hint / reveal / verify` |
+| `lab/exercises/` | Lesson grid (7 tracks × 5 levels): `./run.sh list / start / stage / hint / reveal / verify`. Authoring rules in `LESSON-GUIDE.md`; run `bash lib/check-lessons.sh` before committing a lesson |
 | `lab/stages/` | Units 6–7: web-srv (site, portal, Juice Shop) and dc01 (AD scripts). Built, not deployed |
-| `infra/` | Units 5+: Terraform for the lab, with KT exercises and an answers folder (draft PR #6) |
+| `infra/` | Units 5+: Terraform for the lab, with KT exercises and an answers folder |
 
 ## The curriculum
 
@@ -103,11 +106,14 @@ across before up; concepts spiral back in each new environment.
   KT is drafting IR-2026-001. Other incidents, vulnerability research,
   remediation, docs and the published case study are still to do. **Unit 2
   comes first.**
-- 🔄 Unit 3: `lab/exercises/` merged (13 exercises, quiet staging); being
-  reworked to follow the lesson grid. Tested in a container, not yet on the
-  live VMs. Each VM needs its own clone of the repo to stage from it.
-- 📦 Unit 5: `infra/` in draft PR #6. Only `terraform fmt` has run; first step
-  is `terraform init` + `validate` in Azure Cloud Shell.
+- 🔄 Unit 3: `lab/exercises/` is the lesson grid. 40 of 84 lessons written;
+  every round-1 box (A–D, L1–L3 on the current VMs) is filled. Tested in
+  containers, not yet on the live VMs, and the new Windows logon script hasn't
+  run on Windows. Each VM needs its own clone of the repo to stage from it.
+  Still to write: later-round lessons (tracks E and G, most L4/L5 boxes).
+- 📦 Unit 5: `infra/` merged. `terraform validate` passes (run with a local
+  provider mirror); KT's first step is `terraform init` + `plan` in Azure
+  Cloud Shell.
 - 📦 Units 6–7: `lab/stages/` merged, not deployed. dc01 PowerShell is untested
   on real Windows. Attack scenarios and busy-office noise are placeholders.
 - 📝 Units 4, 8, 9, 10: plan only.
