@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Remove an unwanted scheduled task and prove it's gone"
+EX_SUMMARY="An unwanted scheduled task is on win-srv. Remove it and prove removal."
+EX_ENV="detect"
+EX_ROUND="2"
+EX_WHERE="win-srv"
+EX_FIX_WHERE=""
+EX_STAGE="# No scripted staging yet (comes later). To practise now, on win-srv create a benign scheduled task that writes the date to a file in C:\\ProgramData\\lab\\, then remove it as the lesson describes and prove it is gone."
+EX_RESET="# To redo the lesson, create the benign scheduled task again (see the staging note)."
+EX_WAZUH_SEARCH="agent.name: win-srv"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1053.005"

@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="A slow brute force spread over hours of normal activity"
+EX_SUMMARY="No alert fired. Somewhere in a busy day, someone was guessing slowly. Find them."
+EX_ENV="office"
+EX_ROUND="7"
+EX_WHERE="none"
+EX_FIX_WHERE=""
+EX_STAGE="# Staged by the busy-office generator (unit 9)"
+EX_RESET=""
+EX_WAZUH_SEARCH=""
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1110.001"

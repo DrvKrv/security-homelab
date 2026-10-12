@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Tune the brute-force threshold: catch attacks, ignore typos"
+EX_SUMMARY="Write your own SSH guessing rule with a threshold you can defend, and prove it with logtest and a live run."
+EX_ENV="core"
+EX_ROUND="2"
+EX_WHERE="wazuh"
+EX_FIX_WHERE=""
+EX_STAGE="bash linux/simulate-ssh-bruteforce.sh"
+EX_RESET="# Nothing to undo on linux-srv. To go back to stock behaviour, remove your rule from /var/ossec/etc/rules/local_rules.xml and restart wazuh-manager."
+EX_WAZUH_SEARCH="agent.name: linux-srv"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1110.001"

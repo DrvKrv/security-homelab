@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Reset a compromised portal account and end its sessions"
+EX_SUMMARY="A portal password has leaked and someone is signed in. Lock them out and prove it."
+EX_ENV="web"
+EX_ROUND="4"
+EX_WHERE="web-srv"
+EX_FIX_WHERE=""
+EX_STAGE="# Not scripted yet (it arrives once web-srv is built). From win-srv's browser, sign in to the portal with the demo account and leave that tab open: it plays the intruder's session."
+EX_RESET="sudo bash stages/2-web-srv/install.sh"
+EX_WAZUH_SEARCH="agent.name: web-srv"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1078"

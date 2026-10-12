@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Auto-block a brute-forcing source with Wazuh active response"
+EX_SUMMARY="Make Wazuh block an SSH guesser on linux-srv by itself, for a limited time, and prove it."
+EX_ENV="core"
+EX_ROUND="2"
+EX_WHERE="wazuh"
+EX_FIX_WHERE="wazuh"
+EX_STAGE="bash linux/simulate-ssh-bruteforce.sh"
+EX_RESET="# The block lifts itself when its timeout ends. To lift it sooner, run 'sudo systemctl restart wazuh-agent' on linux-srv. When you finish the lesson, remove your <active-response> block from ossec.conf and restart wazuh-manager."
+EX_WAZUH_SEARCH="agent.name: linux-srv"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1110.001"
