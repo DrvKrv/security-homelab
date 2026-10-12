@@ -1,0 +1,23 @@
+{
+  "_comment": "Copy made as config.json by office.sh install. Edit to taste. All times are the generator host's LOCAL time, 24h clock.",
+
+  "portal_url": "http://localhost/portal",
+  "site_url": "http://localhost/",
+
+  "_generated_dir": "Where the web-srv installer wrote company.json and lab-credentials.json. The default assumes 5-office sits next to 2-web-srv in the same checkout.",
+  "generated_dir": "",
+
+  "work_start_hour": 8,
+  "work_end_hour": 18,
+
+  "_peak_active_fraction": "At most this fraction of staff act in one 10-minute tick during the busiest hours.",
+  "peak_active_fraction": 0.35,
+
+  "_red_herring_rate": "Chance per tick that one harmless-but-suspicious red herring fires.",
+  "red_herring_rate": 0.06,
+
+  "_seed": "office.sh install rolls a random one and records it in spoilers/. Leave 0 here; a non-zero value pins 'normal' for a repeatable demo.",
+  "seed": 0,
+
+  "max_actions_per_tick": 60
+}

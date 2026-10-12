@@ -1,25 +1,20 @@
-# Busy-office noise generator (placeholder)
+# Busy-office noise generator (moved)
 
-**Not built yet - this is a documented placeholder.**
+This used to be a placeholder. The generator is now **built**, as its own stage:
 
-Later stages add a generator that makes the fake Acme staff *act* like people:
-log into the portal, browse the site, occasionally mistype a password, come and
-go on their own schedules. The point is to bury real attacks in realistic normal
-activity, so finding them is a genuine skill (threat hunting), not just reading a
-quiet log.
+> **[`lab/stages/5-office/`](../../5-office/)** (unit 9)
 
-## Design (for when it's built)
+It makes the fake Acme staff act like people, logging into this web-srv portal
+and browsing the site on their own schedules, so real attacks have to be found
+inside normal noise. It reuses the roster and throwaway passwords this stage's
+installer created (`../generated/`), runs as a systemd timer during work hours,
+and is quiet by design (red herrings go to a git-ignored spoilers folder).
 
-- Each employee already has a **persona** in the generated roster (`early_bird`,
-  `night_owl`, `typo_prone`, `heavy_file_user`, `rare_login`, ...). The generator
-  will drive behaviour from that, with random timing jitter so no two days match.
-- It uses the git-ignored `generated/lab-credentials.json` to log in as the fake
-  staff (lab-only throwaway passwords, created at install).
-- **Quiet by design**: it logs nothing that reveals a hidden attack, and it runs
-  as a background service (a systemd timer) during "work hours" you set.
-- It will include harmless-but-suspicious **red herrings** (a legit admin running a
-  scan, someone back from holiday failing login a few times) so you practise
-  telling benign from malicious.
+Install it on web-srv after this stage is up:
 
-Until then, you can create normal activity by hand: log into the portal as
-`demo.user`, click around, and watch the events arrive in Wazuh.
+```bash
+cd ../../5-office
+sudo bash office.sh install
+```
+
+See [`5-office/README.md`](../../5-office/README.md) for the full write-up.

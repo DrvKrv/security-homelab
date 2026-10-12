@@ -1,0 +1,17 @@
+[Unit]
+Description=Acme busy-office noise generator (one slice of activity)
+Documentation=https://github.com/DrvKrv/security-homelab/tree/main/lab/stages/5-office
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=@USER@
+WorkingDirectory=@HERE@
+# One tick = one short slice of the working day. It prints only "done".
+ExecStart=/usr/bin/python3 @HERE@/office.py tick
+# A tick is short; stop it if it ever hangs on a slow request.
+TimeoutStartSec=120
+# Keep it contained: it only needs to reach the portal and read its own folder.
+NoNewPrivileges=true
+PrivateTmp=true

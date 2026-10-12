@@ -1,0 +1,7 @@
+# The breach plan, its seed, the accounts it chose and every step's raw output
+# are answers. They stay on the VM, never committed.
+spoilers/
+
+# Python bytecode from local testing
+__pycache__/
+*.pyc

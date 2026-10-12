@@ -2,9 +2,11 @@
 
 > Part of the combined curriculum: stages 2–6 here are **units 6–10** in [curriculum-roadmap.md](curriculum-roadmap.md).
 
-**Status (2026-10-12):** stages 2 and 3 are built in `lab/stages/` (PR #5, merged) but not deployed;
-their attack scenarios and busy-office noise are documented placeholders. Stages 4–6 are plan only.
-Lab as code (`infra/`) is in draft PR #6. Builds on [detection-engineering.md](detection-engineering.md).
+**Status (2026-10-12):** stages 2–6 are built in `lab/stages/` but not deployed.
+Stage 2's scripted web-srv attack scenarios are still a documented placeholder (its
+training app's own challenges cover that gap). Stage 5 (busy-office noise, `5-office/`)
+and stage 6's automated breach conductor (`6-capstone/run-breach.sh`) are now built.
+Lab as code (`infra/`) is merged. Builds on [detection-engineering.md](detection-engineering.md).
 
 ## The idea in one sentence
 
@@ -21,8 +23,8 @@ This still counts as **one focused project**, because every stage is the same co
 | **2. Company website** | `web-srv` (Ubuntu): public-style homepage, employee portal with login, a deliberately vulnerable training app (OWASP Juice Shop, official image) | 1 Linux | Detect web attacks in Wazuh, scan it, research CVEs in its old software, patch, add a WAF |
 | **3. Company accounts (Active Directory)** | `dc01` (Windows Server domain controller). win-srv joins the domain; the portal logs in with AD accounts | 1 Windows | Detect password spraying, Kerberoasting, sneaky admin-group changes |
 | **4. Network zones** | Split the network into a DMZ (web) and an internal zone (dc01, wazuh) with firewall rules between them | none (subnets and NSG rules are free) | Design and test segmentation; prove a hacked web server can't reach the DC directly |
-| **5. Busy office** | Scripts that make fake employees log in, browse, and use apps all day, so real attacks hide in normal noise | none | Find the needle in the haystack, tune out false positives |
-| **6. Capstone breach** | A scripted multi-step attack: web app hole, stolen password, jump to AD, data taken | none | Full incident response and a final report: the centerpiece of your case study |
+| **5. Busy office** (`5-office/`, built) | Scripts that make fake employees log in, browse, and use apps all day, so real attacks hide in normal noise | none | Find the needle in the haystack, tune out false positives |
+| **6. Capstone breach** (`6-capstone/`, built) | A seeded multi-step attack conductor that chains the existing sims across VMs: recon, password guessing, a valid account, persistence, lateral probing | none | Full incident response and a final report: the centerpiece of your case study |
 
 **One thing to check before stage 2:** some subscriptions (student ones especially) have a limit on how many CPU cores can be running in a region. Your three VMs use 6 cores. In the portal, go to Subscriptions > Usage + quotas and look at "Total Regional vCPUs" for West US 2. If the limit is 6, you'd need to stop another VM (or request more) before a 4th can start. (Worth ruling out before creating a 4th VM.)
 
