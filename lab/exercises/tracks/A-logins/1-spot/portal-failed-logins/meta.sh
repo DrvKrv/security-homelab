@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Failed logins on the employee portal"
+EX_SUMMARY="Wrong passwords on the Acme portal. Find them in Wazuh and read what they say."
+EX_ENV="web"
+EX_ROUND="4"
+EX_WHERE="web-srv"
+EX_FIX_WHERE=""
+EX_STAGE="# Not scripted yet (it arrives once web-srv is built). From win-srv's browser, open the portal and sign in with a wrong password several times, then come back."
+EX_RESET=""
+EX_WAZUH_SEARCH="agent.name: web-srv"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1110.001"

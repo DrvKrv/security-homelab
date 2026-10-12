@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="A rule for password spraying: many accounts, one source"
+EX_SUMMARY="Per-account rules miss spraying. Write one that counts accounts per source, and test both ways."
+EX_ENV="ad"
+EX_ROUND="5"
+EX_WHERE="dc01"
+EX_FIX_WHERE="wazuh"
+EX_STAGE="# Scripted staging arrives once dc01 is built (unit 7). Until then, from win-srv's Remote Desktop box, type the same wrong password once each for 4 or 5 staff accounts (never more than once per account)."
+EX_RESET="# Nothing to undo. To remove your rule, delete it from /var/ossec/etc/rules/local_rules.xml on wazuh and restart wazuh-manager."
+EX_WAZUH_SEARCH="agent.name: dc01"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1110.003"

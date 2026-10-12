@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Password spraying: one password tried on many accounts"
+EX_SUMMARY="Failed logons spread across many accounts. Decide what kind of attack it is and whether it worked."
+EX_ENV="ad"
+EX_ROUND="5"
+EX_WHERE="dc01"
+EX_FIX_WHERE=""
+EX_STAGE="# Scripted staging arrives once dc01 is built (unit 7). Until then, from win-srv's Remote Desktop box, type the same wrong password once each for 4 or 5 staff accounts (never more than once per account)."
+EX_RESET=""
+EX_WAZUH_SEARCH="agent.name: dc01"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1110.003"

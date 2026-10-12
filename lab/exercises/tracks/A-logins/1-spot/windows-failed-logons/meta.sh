@@ -1,0 +1,11 @@
+# shellcheck shell=bash
+EX_TITLE="Windows failed logons on win-srv"
+EX_SUMMARY="Repeated bad logins on Windows. Find them and what happened to the account."
+EX_ENV="core"
+EX_ROUND="1"
+EX_WHERE="win-srv"
+EX_STAGE="powershell -ExecutionPolicy Bypass -File windows\\Simulate-FailedLogons.ps1"
+EX_RESET="powershell -ExecutionPolicy Bypass -File windows\\Reset-Lab.ps1 -UnlockUser labuser"
+EX_WAZUH_SEARCH="agent.name: win-srv"
+EX_HAS_VERIFY="no"
+EX_ATTACK="T1110.001 Brute Force: Password Guessing"

@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Failed domain logons"
+EX_SUMMARY="Bad passwords for a domain account. Find what the domain controller logged."
+EX_ENV="ad"
+EX_ROUND="5"
+EX_WHERE="dc01"
+EX_FIX_WHERE=""
+EX_STAGE="# Scripted staging arrives once dc01 is built (unit 7). Until then, sign in to dc01 from win-srv's Remote Desktop box with the demo account and a wrong password, 3 times at most, then come back."
+EX_RESET=""
+EX_WAZUH_SEARCH="agent.name: dc01"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1110.001"

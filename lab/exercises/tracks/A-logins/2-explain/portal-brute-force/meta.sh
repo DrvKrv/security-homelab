@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Portal brute force: which accounts, which source"
+EX_SUMMARY="A burst of bad portal logins. Build the timeline and say who, from where, and whether it worked."
+EX_ENV="web"
+EX_ROUND="4"
+EX_WHERE="web-srv"
+EX_FIX_WHERE=""
+EX_STAGE="# Not scripted yet (it arrives once web-srv is built). From win-srv's browser, type wrong portal passwords for two or three usernames, 7 or more tries in under two minutes, then sign in correctly once with the demo account."
+EX_RESET=""
+EX_WAZUH_SEARCH="agent.name: web-srv"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1110.001"
