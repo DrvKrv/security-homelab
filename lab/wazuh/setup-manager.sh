@@ -69,6 +69,6 @@ sleep 5
 systemctl --no-pager --lines=0 status wazuh-manager
 
 echo
-echo "Done. Next: test the rules with sample logs:"
-echo "  sudo $OSSEC/bin/wazuh-logtest"
-echo "and paste lines from $HERE/manager/logtest-samples.txt"
+echo "Done. Next: check the rules fire as expected:"
+echo "  sudo bash $HERE/test-rules.sh"
+echo "or test one line by hand: sudo $OSSEC/bin/wazuh-logtest (samples in $HERE/manager/logtest-samples.txt)"

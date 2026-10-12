@@ -7,6 +7,8 @@
 # Press Ctrl+C to quit.
 #
 # These are made-up lines in the same format as Ubuntu 24.04's journald.
+# The same lines, with the result each must give, are automated in
+# lab/wazuh/tests/ (run: sudo bash lab/wazuh/test-rules.sh).
 # IPs: 10.0.1.10 = wazuh (playing attacker), 10.0.1.30 = linux-srv.
 
 # 1) UFW blocked a connection -> expect rule 100100, level 5,

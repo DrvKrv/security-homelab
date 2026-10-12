@@ -56,4 +56,4 @@ you'd detect this better.
 1. On linux-srv, `sudo -l -U <account>` lists an account's sudo rights; try the lab test account first.
 2. `ls -l /etc/sudoers.d/` and compare with a fresh VM: the cloud-init file and `README` are normal, anything else needs a reason.
 3. In Wazuh, search linux-srv for `rule.groups: syscheck` and a `syscheck.path` under `/etc/sudoers.d`; the diff shows the line.
-4. Search linux-srv for `rule.id: 5402` near that time; `data.srcuser` and `data.command` show who ran what. Then find that account's SSH login (5715).
+4. Search linux-srv for `rule.groups: sudo` near that time; `data.srcuser` and `data.command` show who ran what. Then find that account's SSH login (5715).
