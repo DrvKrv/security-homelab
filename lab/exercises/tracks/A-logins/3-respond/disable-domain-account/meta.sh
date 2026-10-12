@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Disable a compromised domain account and find everywhere it logged in"
+EX_SUMMARY="A domain password is in the wrong hands. Shut the account down, find every logon, prove it is closed."
+EX_ENV="ad"
+EX_ROUND="5"
+EX_WHERE="dc01"
+EX_FIX_WHERE=""
+EX_STAGE="# Scripted staging arrives once dc01 is built (unit 7). Until then, on win-srv open \\\\10.0.1.50\\SYSVOL in File Explorer, type a wrong password for the demo account twice, then sign in correctly and leave the window open."
+EX_RESET="# On dc01: Enable-ADAccount -Identity demo.user and set its password back, or roll a fresh company with stages\\3-dc01\\Reset-Company.ps1 then Seed-Company.ps1."
+EX_WAZUH_SEARCH="agent.name: dc01"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1078.002"

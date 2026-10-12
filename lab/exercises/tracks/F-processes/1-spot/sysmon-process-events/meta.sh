@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="See process-start events from Sysmon on win-srv"
+EX_SUMMARY="Find the log that tells you what programs are starting on win-srv."
+EX_ENV="detect"
+EX_ROUND="2"
+EX_WHERE="win-srv"
+EX_FIX_WHERE=""
+EX_STAGE="# No scripted staging yet (comes later). On win-srv, run a couple of harmless commands (for example: whoami, then ipconfig /all) and watch them appear as process-start events."
+EX_RESET=""
+EX_WAZUH_SEARCH="agent.name: win-srv"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK=""

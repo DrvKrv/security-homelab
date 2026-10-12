@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Account lockout policy, before and after"
+EX_SUMMARY="Measure the domain's lockout policy, set it to the lab policy, and prove the change with a test account."
+EX_ENV="ad"
+EX_ROUND="5"
+EX_WHERE="dc01"
+EX_FIX_WHERE=""
+EX_STAGE="# Scripted staging arrives once dc01 is built (unit 7). Until then you test by hand with the demo account only, as the brief describes."
+EX_RESET="# On dc01: Unlock-ADAccount -Identity demo.user. Keep the new policy; it is the fix."
+EX_WAZUH_SEARCH="agent.name: dc01"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1110.001"

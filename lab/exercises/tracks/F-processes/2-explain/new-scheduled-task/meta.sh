@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+EX_TITLE="Find a scheduled task that appeared"
+EX_SUMMARY="A new scheduled task showed up on win-srv. Explain what it is and what it does."
+EX_ENV="detect"
+EX_ROUND="2"
+EX_WHERE="win-srv"
+EX_FIX_WHERE=""
+EX_STAGE="# No scripted staging yet (comes later). To practise now, on win-srv create a benign scheduled task that writes the date to a file in C:\\ProgramData\\lab\\, then work the lesson from the other side as if you had just found it."
+EX_RESET="# When you are done, delete the task you created: schtasks /Delete /TN <your task name> /F"
+EX_WAZUH_SEARCH="agent.name: win-srv"
+EX_HAS_VERIFY="no"
+EX_STAGE_CONFIRM="no"
+EX_ATTACK="T1053.005"
