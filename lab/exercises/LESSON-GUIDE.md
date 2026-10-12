@@ -98,6 +98,12 @@ Never write new exploit, brute-force, scanning or malware code, attack payloads,
 step-by-step attack instructions. Staging only ever targets the lab's own private
 VMs.
 
+**Approved exception (KT, 2026-10-12):** `lab/windows/Simulate-SuccessfulLogon.ps1`
+makes one real logon on win-srv, but only as a throwaway lab account it creates
+itself, with a password it set itself. It exists because lessons need "failures,
+then one success", and the failure script can't produce a success. Reuse it for
+that; don't widen it, and ask KT before adding anything like it.
+
 ## brief.md
 
 ```markdown
