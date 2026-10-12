@@ -1,0 +1,7 @@
+# Everything the installer generates on the VM stays local, never committed.
+generated/
+.web-srv.env
+
+# Python bytecode from local testing
+__pycache__/
+*.pyc
