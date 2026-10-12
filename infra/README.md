@@ -2,7 +2,7 @@
 
 This folder describes your whole lab as text files, so it can be rebuilt,
 reviewed and audited instead of clicked together in the portal. It's **unit 5**
-of the curriculum (`/mnt/project-files/homelab/curriculum-roadmap.md`).
+of the curriculum ([docs/plan/curriculum-roadmap.md](../docs/plan/curriculum-roadmap.md)).
 
 **Nothing here changes Azure until you run it, and it's built for you to learn,
 not just run.** The network, firewall and web-srv files are written as worked
