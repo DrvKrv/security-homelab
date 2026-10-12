@@ -23,13 +23,13 @@ after them should delay finishing it.
 | 1 | Build the lab | ✅ | built | Cloud setup, networking, SIEM install |
 | 2 | First incidents + case study | 🔄 | none | The defender workflow: detect, investigate, fix, report |
 | 3 | Practice range | 🔄 round 1 built | none | Repetition on the same skills, harder each level |
-| 4 | Detection engineering | 📝 | none | Writing and testing your own alerts |
+| 4 | Detection engineering | 📦 | none | Writing and testing your own alerts |
 | 5 | Lab as code (Terraform) | 📦 | none | Infrastructure as code, cloud engineering |
 | 6 | Company website (web-srv) | 📦 | Linux | Web security, vulnerability management |
 | 7 | Company accounts (dc01, Active Directory) | 📦 | Windows | Identity and access |
-| 8 | Network zones | 📝 | none | Segmentation, firewalls, network monitoring |
+| 8 | Network zones | 📦 | none | Segmentation, firewalls, network monitoring |
 | 9 | Busy office | 📝 | none | Threat hunting in normal noise |
-| 10 | Capstone breach | 📝 | none | Full incident response, final report |
+| 10 | Capstone breach | 📦 investigation kit | none | Full incident response, final report |
 
 Running alongside every unit: **GRC** (risk, policy, audits) and **Security+** study.
 Optional later: **DevSecOps pipeline** and **container security**.
@@ -77,7 +77,12 @@ with hints, the answer key or `./run.sh verify`.
 L1 and L2 lessons overlap with Unit 2, so they count toward the case study too.
 A4 "write your own first Wazuh rule" is where you write a rule yourself (so far Claude wrote them).
 
-## Unit 4. Detection engineering 📝 (no new VMs)
+## Unit 4. Detection engineering 📦 (no new VMs; guide: `lab/runbooks/06-detection-engineering.md`)
+
+Built: Sysmon installer and config (`lab/windows/Install-Sysmon.ps1`), Suricata setup
+(`lab/linux/setup-suricata.sh`), Wazuh rule tests run against the real engine
+(`lab/wazuh/test-rules.sh`, or `test-rules-docker.sh` anywhere with Docker), and lessons
+B4, C4 (Suricata) and F4 (ATT&CK coverage map). Sysmon hasn't run on real Windows yet.
 
 In Unit 2 you *read* alerts. Here you *build* them.
 - **Sysmon** on win-srv: logs what happens after a login, not just the login.
@@ -123,23 +128,25 @@ Deploy: Windows VM at 10.0.1.50, switched on only while in use.
 You learn: Active Directory, least privilege (who's an admin and shouldn't be), password
 policy, logon baselining. Later: detecting identity attacks like password spraying.
 
-## Unit 8. Network zones 📝 (written in Terraform)
+## Unit 8. Network zones 📦 (`infra/zones.tf`, exercise 06; checker in `lab/stages/4-zones/`)
 
 Split the network into a DMZ (web-srv) and an internal zone (dc01, wazuh) with firewall
 rules between them. Prove a compromised web server can't reach the domain controller.
 You learn: segmentation, firewall design, and why Azure limits network monitoring.
 
-## Unit 9. Busy office 📝 (placeholder in `lab/stages/`)
+## Unit 9. Busy office 📝 (placeholder in `lab/stages/`; generator not built)
 
 A generator that makes the fake staff act like people: logins, browsing, typos, odd hours,
 harmless-but-suspicious red herrings. Randomized and silent.
 You learn: baselining "normal", threat hunting, tuning out false positives.
 
-## Unit 10. Capstone breach 📝
+## Unit 10. Capstone breach 📦 investigation kit (`lab/stages/6-capstone/`)
 
-A multi-step scenario across the whole company, which can fire at a random time
-("surprise mode"). You run the full response and write the final report: the centerpiece
-of the case study.
+One larger incident across the company, worked from first alert to final report: the
+centerpiece of the case study. Built: scoping questions, an evidence checklist and log,
+and a final-report template (`docs/incidents/TEMPLATE-final-report.md`). Not built: an
+automated multi-step breach; the kit's README lists ways to set up an incident from the
+existing lessons instead.
 
 ---
 

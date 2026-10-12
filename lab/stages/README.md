@@ -10,8 +10,7 @@ This folder is the **plan made real**: the code and scripts live here now, in th
 repo, and you deploy a stage onto a VM only when you're ready. Nothing here
 creates Azure resources or costs money by sitting in git.
 
-See the full write-up: `/mnt/project-files/homelab/expansion-stages-plan.md`
-(in the project, not the repo).
+See the full write-up: [docs/plan/expansion-stages.md](../../docs/plan/expansion-stages.md).
 
 ## The stages
 
@@ -19,7 +18,9 @@ See the full write-up: `/mnt/project-files/homelab/expansion-stages-plan.md`
 |---|---|---|---|
 | 2 | `2-web-srv/` | `web-srv` (Linux, 10.0.1.40) | Company website, employee portal, a training target app, web logs in Wazuh |
 | 3 | `3-dc01/` | `dc01` (Windows, 10.0.1.50) | Active Directory: a domain, staff accounts, groups |
-| 4+ | *(later)* | none | Network zones, busy-office noise, a capstone breach |
+| 4 | `4-zones/` (+ `infra/zones.tf`) | none | Network zones: a DMZ for web-srv, and a checker that proves the split |
+| 5 | *(not built)* | none | Busy-office noise |
+| 6 | `6-capstone/` | none | The capstone investigation kit: scoping, evidence, final report |
 
 Do the stages **after** Phase 1 (finish the incidents and the case study first),
 and don't let them delay applying to internships.
@@ -53,8 +54,10 @@ and don't let them delay applying to internships.
 
 ### Still to come (placeholders for now)
 
-`2-web-srv/scenarios/` and a future noise generator are **documented placeholders**.
-Attack-simulation and traffic-generation scripts are not written yet; for now the
-target app's own built-in challenges give you plenty to detect and investigate.
+`2-web-srv/scenarios/` and `2-web-srv/noise/` are **documented placeholders**.
+Attack-simulation and traffic-generation scripts are not written; for now the
+target app's own built-in challenges give you plenty to detect and investigate,
+and you can create normal portal activity by hand. The capstone kit
+(`6-capstone/`) covers the investigation and report, not an automated breach.
 The staged practice-exercise runner lives in `lab/exercises/` (a separate piece of
 work) — these stages feed it realistic infrastructure to run against later.

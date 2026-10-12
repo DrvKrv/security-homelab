@@ -1,0 +1,20 @@
+# Lab rules for UFW on linux-srv (lab/wazuh/manager/local_rules.xml).
+# Sample lines are made up, in Ubuntu 24.04's journald format.
+
+[UFW block is decoded and alerted]
+log: Oct 11 21:40:01 linux-srv kernel: [UFW BLOCK] IN=eth0 OUT= MAC=00:0c:29:aa:bb:cc:00:0c:29:dd:ee:ff:08:00 SRC=10.0.1.10 DST=10.0.1.30 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=54321 DF PROTO=TCP SPT=51515 DPT=3306 WINDOW=64240 RES=0x00 SYN URGP=0
+rule: 100100
+level: 5
+field: srcip=10.0.1.10
+field: dstport=3306
+
+[six blocks stay under the port-scan threshold]
+log: Oct 11 21:40:01 linux-srv kernel: [UFW BLOCK] IN=eth0 OUT= MAC=00:0c:29:aa:bb:cc:00:0c:29:dd:ee:ff:08:00 SRC=10.0.1.10 DST=10.0.1.30 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=54321 DF PROTO=TCP SPT=51515 DPT=3306 WINDOW=64240 RES=0x00 SYN URGP=0
+repeat: 6
+rule: 100100
+
+[eight blocks from one source in a minute look like a scan]
+log: Oct 11 21:40:01 linux-srv kernel: [UFW BLOCK] IN=eth0 OUT= MAC=00:0c:29:aa:bb:cc:00:0c:29:dd:ee:ff:08:00 SRC=10.0.1.10 DST=10.0.1.30 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=54321 DF PROTO=TCP SPT=51515 DPT=3306 WINDOW=64240 RES=0x00 SYN URGP=0
+repeat: 8
+rule: 100102
+level: 10

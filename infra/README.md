@@ -32,10 +32,12 @@ makes reality match. The big wins:
 | `core.tf` | your three existing VMs (you *import* these, exercise 5) |
 | `web-srv.tf` | stage 2's VM — the **worked example** to model dc01 on |
 | `dc01.tf.todo` | stage 3's VM — **you write this** (exercise 3) |
+| `zones.tf` | unit 8: the DMZ subnet and its firewall — the worked example for zones |
+| `zones-internal.tf.todo` | unit 8: the internal zone's firewall — **you write this** (exercise 6) |
 | `outputs.tf` | IPs/passwords printed after apply |
 | `terraform.tfvars.example` | copy to `terraform.tfvars` (git-ignored) and fill in |
-| `answers/dc01.tf` | the dc01 answer key — don't peek until you've tried |
-| `exercises/` | the five lessons below |
+| `answers/` | answer keys for dc01 and the internal zone — don't peek until you've tried |
+| `exercises/` | the six lessons below |
 
 ## Where you run it
 
@@ -58,6 +60,7 @@ terraform plan                                  # ALWAYS read this before apply
 3. **`exercises/03-write-dc01.md`** — write the dc01 file yourself from the web-srv model.
 4. **`exercises/04-find-the-misconfig.md`** — catch an internet-exposed RDP rule with a scanner, and fix it.
 5. **`exercises/05-import-existing-vms.md`** — bring your three hand-built VMs under code.
+6. **`exercises/06-network-zones.md`** — unit 8: split the network into zones, write the internal firewall, prove web-srv can't reach dc01.
 
 ## Safety and secrets (this is a public repo)
 

@@ -20,7 +20,7 @@ resource "azurerm_network_interface" "web_srv" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.lab.id
+    subnet_id                     = var.enable_zones ? azurerm_subnet.dmz[0].id : azurerm_subnet.lab.id
     private_ip_address_allocation = "Static"
     private_ip_address            = local.ips.web_srv
   }

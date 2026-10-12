@@ -31,7 +31,17 @@ Then add the decoder and rules (append, don't overwrite):
 ```bash
 cat local_decoder.xml | sudo tee -a /var/ossec/etc/decoders/local_decoder.xml
 cat local_rules.xml   | sudo tee -a /var/ossec/etc/rules/local_rules.xml
-sudo systemctl restart wazuh-manager
+sudo /var/ossec/bin/wazuh-analysisd -t && sudo systemctl restart wazuh-manager
+```
+
+`wazuh-analysisd -t` checks every rule and decoder first. If it prints an error,
+don't restart: a manager restarted with a broken rule file stops processing
+events. Fix the file (or remove what you appended) and test again.
+
+```bash
+# Optional: run the lab's rule tests (lab/wazuh/test-rules.sh) to check that
+# the portal rules decode and fire as expected.
+sudo bash ../../../wazuh/test-rules.sh
 ```
 
 ## 3. Confirm it works

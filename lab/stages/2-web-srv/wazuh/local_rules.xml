@@ -12,13 +12,13 @@
 
   <rule id="100400" level="3">
     <decoded_as>acme-portal</decoded_as>
-    <field name="status">success</field>
+    <status>success</status>
     <description>Acme portal: successful login for $(srcuser) from $(srcip)</description>
   </rule>
 
   <rule id="100401" level="5">
     <decoded_as>acme-portal</decoded_as>
-    <field name="status">failure</field>
+    <status>failure</status>
     <description>Acme portal: failed login for $(srcuser) from $(srcip)</description>
   </rule>
 

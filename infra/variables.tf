@@ -92,6 +92,22 @@ variable "enable_dc01" {
   default     = false
 }
 
+# --- network zones (unit 8) ---------------------------------------------------
+variable "enable_zones" {
+  description = <<-EOT
+    Unit 8: split the network. true adds a DMZ subnet for web-srv with its own
+    firewall, and moves web-srv into it (10.0.2.40). See exercises/06-network-zones.md.
+  EOT
+  type        = bool
+  default     = false
+}
+
+variable "dmz_subnet_cidr" {
+  description = "The DMZ subnet: machines the outside world would talk to (web-srv)."
+  type        = string
+  default     = "10.0.2.0/24"
+}
+
 variable "tags" {
   description = "Tags put on every resource, so costs are easy to find and filter."
   type        = map(string)
