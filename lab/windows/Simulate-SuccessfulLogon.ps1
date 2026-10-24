@@ -8,7 +8,7 @@
     !!! It only ever logs on to THIS computer, only with the lab account it
     !!! created itself, and never with your own account.
 
-    Approved by KT on 2026-10-12 as an exception to the repo's "no new attack
+    Approved on 2026-10-12 as an exception to the repo's "no new attack
     code" rule: it signs in with a password it set itself, nothing more.
 
     -Phase Prepare   Creates a throwaway local account (a random name from a

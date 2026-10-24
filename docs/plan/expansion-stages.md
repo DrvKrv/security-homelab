@@ -16,7 +16,7 @@ This still counts as **one focused project**, because every stage is the same co
 
 ## The stages
 
-| Stage | What gets added | New VM | What you (KT) do |
+| Stage | What gets added | New VM | What you do |
 |---|---|---|---|
 | **0. Finish Phase 1** | Nothing new | none | Finish the incidents, publish the case study |
 | **1. Phase 2, no new VMs** | Sysmon, custom rules, ATT&CK tags, Atomic Red Team, Suricata, active response | none | Detection engineering (see [detection-engineering.md](detection-engineering.md)) |
@@ -114,7 +114,7 @@ So once a stage is installed, the company "lives" on its own while the VMs are o
 
 ### Randomness, so you can't memorize "normal"
 
-KT's requirement (2026-10-12): the fake company must not become predictable. Randomness goes in at four levels:
+Requirement: the fake company must not become predictable. Randomness goes in at four levels:
 
 1. **A different company every install.** The installer rolls a random roster from large name/department/job pools: who works there, who's an admin, which accounts are service accounts, which one has the weak password. Run `reroll` and it's a new company.
 2. **Unpredictable daily behavior.** Each fake employee gets a personality (early bird, night owl, chronic password-typo person, heavy file user, rarely logs in) and every action has random timing jitter, so no two days produce the same log pattern.
@@ -127,11 +127,11 @@ Every roll is saved with a seed in the spoilers folder, so afterward you can che
 
 ### Quiet by design
 
-KT's rule (2026-10-12): staging scripts never print what they're doing, because the output would spoil the investigation. This applies to every stage: web-srv attacks, AD scenarios, the busy-office noise, and surprise mode.
+Rule: staging scripts never print what they're doing, because the output would spoil the investigation. This applies to every stage: web-srv attacks, AD scenarios, the busy-office noise, and surprise mode.
 
 - Scripts print only a neutral line like "done" (or an error if something failed to start). They never say which attack ran, which account was targeted, or when.
 - They don't leave obvious clues on the lab VMs either: no tell-tale file names or log lines written by the script itself.
-- Answers come only when KT asks: a `hint` command (one nudge at a time), a `reveal` command, or the spoilers folder with the run's seed.
+- Answers come only when you ask: a `hint` command (one nudge at a time), a `reveal` command, or the spoilers folder with the run's seed.
 
 ### What being public changes
 
@@ -143,7 +143,7 @@ KT's rule (2026-10-12): staging scripts never print what they're doing, because 
 
 ### Updates, resets and teardown
 
-- **When I change something:** you merge the PR, then `git pull` on the VM and run the installer again. The scripts are written to be safe to re-run.
+- **When something changes:** merge the PR, then `git pull` on the VM and run the installer again. The scripts are written to be safe to re-run.
 - **Broke it while practicing?** Each stage has a `reset` option that puts the apps and fake data back to the starting state, so you can redo an exercise.
 - **Done with a stage:** delete the VM. Nothing is lost, because the whole stage lives in the repo and can be rebuilt in minutes.
 
@@ -161,8 +161,7 @@ This is called **infrastructure as code**: the setup lives in version-controlled
 
 ## Being more ambitious (without wrecking the plan)
 
-KT asked (2026-10-12) how to be more ambitious and learn even more. Honest answer
-first, then options.
+How to be more ambitious and learn even more. The tradeoff first, then options.
 
 ### The honest tradeoff
 
@@ -287,19 +286,19 @@ Terraform is free. The VMs cost the same whether clicked or coded. The cheapest
 habit it enables: switch stages off when you're not using them, instead of
 leaving VMs around.
 
-### How KT actually learns it (not just runs it)
+### How to actually learn it (not just run it)
 
-If every file is handed over and KT only runs `apply`, KT learns very little. So the
-work is split, with KT doing more at each step:
+Copying finished files and only running `apply` teaches very little. So the work
+ramps up, with more written from scratch at each step:
 
 1. **Read and predict:** start from the network and firewall files, with heavy
-   comments. KT predicts what `terraform plan` will create, then checks.
+   comments. Predict what `terraform plan` will create, then checks.
 2. **Change:** small edits (VM size, a new firewall rule); `plan` shows the effect.
-3. **Write:** `stage2-web-srv.tf` is the example; KT writes
+3. **Write:** `stage2-web-srv.tf` is the example; write
    `stage3-dc01.tf` from a blank file with hints. `plan` is the checker; an answer
    file (spoiler) shows one working version afterward.
-4. **Fix a planted mistake:** a risky setting (e.g. RDP open to the internet) for
-   KT to find with the scanner and fix.
+4. **Fix a planted mistake:** a risky setting (e.g. RDP open to the internet) to
+   find with the scanner and fix.
 5. **Import the existing VMs:** the hardest, most real-world step.
 
 ### Order
